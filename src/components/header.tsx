@@ -1,12 +1,15 @@
 import Link from "next/link";
+import { getCurrentUser } from "@/lib/auth";
+import { logoutAction } from "@/lib/auth-actions";
+import { db } from "@/lib/db";
 
-// Test IDs: only the search input and the cart count badge have data-testid.
-// The logo, nav links, and login link deliberately have none (see
-// docs/LOCATORS.md), so they must be located by role and name.
-export function Header() {
-  // Phase 2 (authentication) replaces this with the logged-in user's cart
-  // item count and swaps "Log in" for the account link and logout button.
-  const cartCount: number = 0;
+// Test IDs: only the search input, the cart count badge, and the logout
+// button have data-testid. The logo, nav links, login and account links
+// deliberately have none (see docs/LOCATORS.md), so they must be located by
+// role and name.
+export async function Header() {
+  const user = await getCurrentUser();
+  const cartCount = user ? await getCartItemCount(user.id) : 0;
 
   return (
     <header className="border-b border-gray-200 bg-white">
@@ -75,13 +78,39 @@ export function Header() {
               {cartCount}
             </span>
           </Link>
-          <Link href="/login" className="hover:text-indigo-700">
-            Log in
-          </Link>
+          {user ? (
+            <>
+              <Link href="/account" className="hover:text-indigo-700">
+                Account
+              </Link>
+              <form action={logoutAction}>
+                <button
+                  type="submit"
+                  data-testid="logout-button"
+                  className="hover:text-indigo-700"
+                >
+                  Log out
+                </button>
+              </form>
+            </>
+          ) : (
+            <Link href="/login" className="hover:text-indigo-700">
+              Log in
+            </Link>
+          )}
         </div>
       </div>
     </header>
   );
+}
+
+/** Total quantity of all items in the user's cart. */
+async function getCartItemCount(userId: number): Promise<number> {
+  const result = await db.cartItem.aggregate({
+    where: { userId },
+    _sum: { quantity: true },
+  });
+  return result._sum.quantity ?? 0;
 }
 
 function CartIcon() {
