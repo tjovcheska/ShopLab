@@ -1,0 +1,7 @@
+.next
+node_modules
+src/generated
+prisma/migrations
+public
+package-lock.json
+PLAN.md

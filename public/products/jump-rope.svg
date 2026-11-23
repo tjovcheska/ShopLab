@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Jump Rope">
+  <rect width="400" height="300" fill="#ea580c" opacity="0.15"/>
+  <circle cx="200" cy="125" r="62" fill="#ea580c"/>
+  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">JR</text>
+  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Jump Rope</text>
+</svg>
