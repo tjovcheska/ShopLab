@@ -73,7 +73,9 @@ model Order {
   userId          Int
   user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   status          OrderStatus @default(pending)
-  totalCents      Int
+  totalCents      Int // items + shipping
+  shippingCents   Int         @default(0)
+  deliveryMethod  String? // "standard" | "express" (src/lib/checkout-options.ts)
   shippingAddress Json
   deliveryDate    DateTime?
   createdAt       DateTime    @default(now())

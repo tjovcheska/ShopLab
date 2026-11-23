@@ -5,6 +5,7 @@ import "dotenv/config";
 import bcrypt from "bcryptjs";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaClient } from "../src/generated/prisma/client";
+import { DELIVERY_OPTIONS } from "../src/lib/checkout-options";
 import { categories, pastOrders, products, reviews, users } from "./seed-data";
 
 const db = new PrismaClient({
@@ -99,15 +100,20 @@ async function main() {
         priceCents: product.priceCents,
       };
     });
-    const totalCents = items.reduce(
+    const itemsCents = items.reduce(
       (sum, item) => sum + item.priceCents * item.quantity,
       0,
     );
+    const shippingCents = DELIVERY_OPTIONS.find(
+      (option) => option.id === o.deliveryMethod,
+    )!.priceCents;
     await db.order.create({
       data: {
         userId: userIds.get(o.user)!,
         status: o.status,
-        totalCents,
+        totalCents: itemsCents + shippingCents,
+        shippingCents,
+        deliveryMethod: o.deliveryMethod,
         shippingAddress: o.shippingAddress,
         deliveryDate: new Date(o.deliveryDate),
         createdAt: new Date(o.createdAt),

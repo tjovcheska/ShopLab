@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ChaosBanner } from "@/components/chaos-banner";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { SiteChrome } from "@/components/site-chrome";
 import { ToastProvider } from "@/components/toast";
 import "./globals.css";
 
@@ -16,12 +17,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className="h-full antialiased">
       <body className="flex min-h-full flex-col bg-gray-50 text-gray-900">
         <ToastProvider>
-          <ChaosBanner />
-          <Header />
-          <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
+          <SiteChrome
+            banner={<ChaosBanner />}
+            header={<Header />}
+            footer={<Footer />}
+          >
             {children}
-          </main>
-          <Footer />
+          </SiteChrome>
         </ToastProvider>
       </body>
     </html>

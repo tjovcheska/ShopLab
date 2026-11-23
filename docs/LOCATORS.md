@@ -169,3 +169,68 @@ Toasts disappear **3 seconds** after they appear. "Add to cart" shows "Added to 
 | Last refresh | —             | `getByText(/^Updated at /)`         |
 
 The stock refreshes from the API every 5 seconds. If a refresh fails (flaky mode), the last value stays and "Could not refresh stock. Retrying…" is shown.
+
+## Cart (`/cart`)
+
+| Element            | `data-testid`   | Suggested locator without a test ID                                                   |
+| ------------------ | --------------- | ------------------------------------------------------------------------------------- |
+| One line           | —               | `getByRole('article', { name: 'Yoga Mat' })`                                          |
+| Quantity value     | `item-quantity` | `line.getByRole('group', { name: 'Quantity of Yoga Mat' })`                           |
+| + / − buttons      | —               | `line.getByRole('button', { name: 'Increase quantity' })` / `'Decrease quantity'`     |
+| Line total         | `line-total`    | —                                                                                     |
+| Remove             | —               | `line.getByRole('button', { name: 'Remove' })`                                        |
+| Confirmation modal | —               | `getByRole('dialog', { name: 'Remove item?' })`, then its `Remove` / `Cancel` buttons |
+| Subtotal           | `cart-subtotal` | `getByRole('region', { name: 'Order summary' })`                                      |
+| Empty state        | `empty-cart`    | `getByText('Your cart is empty.')`                                                    |
+| Checkout link      | —               | `getByRole('link', { name: 'Proceed to checkout' })`                                  |
+
+While the modal is open, the page and the dialog both have a "Remove" button. Scope to the dialog.
+
+## Checkout (`/checkout`)
+
+| Element                 | `data-testid`          | Suggested locator without a test ID                                                                           |
+| ----------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Progress indicator      | `checkout-progress`    | `getByRole('navigation', { name: 'Checkout progress' })`, current step has `aria-current="step"`              |
+| Step heading            | —                      | `getByRole('heading', { level: 2 })` ("Shipping address", "Delivery options", "Payment", "Review your order") |
+| Next                    | `checkout-next`        | `getByRole('button', { name: 'Next' })`                                                                       |
+| Back / Place order      | —                      | `getByRole('button', { name: 'Back' })`, `{ name: 'Place order' }`                                            |
+| Full name, City         | —                      | `getByLabel('Full name')`, `getByLabel('City')`                                                               |
+| Address                 | `ship-address`         | `getByLabel('Address', { exact: true })` ("Apartment, suite…" also contains "address")                        |
+| Postal code             | `ship-postal-code`     | `getByLabel('Postal code')`                                                                                   |
+| Country (native select) | `ship-country`         | `getByLabel('Country')` → `selectOption('CA')`                                                                |
+| State / region (custom) | `region-select`        | `getByRole('combobox', { name: 'State / region' })` → click, then `getByRole('option', { name: 'Ontario' })`  |
+| Delivery method         | —                      | `getByRole('radio', { name: /Express delivery/ })`                                                            |
+| Delivery date button    | `delivery-date-button` | `getByRole('button', { name: 'Delivery date' })`                                                              |
+| Calendar popup          | —                      | `getByRole('dialog', { name: 'Choose delivery date' })`                                                       |
+| A day                   | —                      | `calendar.getByRole('button', { name: 'Wednesday, November 25, 2026' })` (disabled days are `disabled`)       |
+| Month navigation        | —                      | `getByRole('button', { name: 'Next month' })` / `'Previous month'`                                            |
+| Payment approved (page) | `payment-approved`     | `getByRole('status').filter({ hasText: 'Payment approved' })`                                                 |
+| Order summary (review)  | `order-summary`        | `getByRole('table', { name: 'Order summary' })`                                                               |
+| Total (review)          | `order-total`          | `table.getByRole('row', { name: /^Total/ })`                                                                  |
+
+The earliest delivery date depends on today's date, so compute it in the test, or fix the browser clock with `page.clock.setFixedTime(...)` (the server still checks against its real date).
+
+## Payment iframe (`/embed/payment`, inside checkout)
+
+Reach it with `page.frameLocator('iframe[title="Payment form"]')` or `page.getByTitle('Payment form').contentFrame()`.
+
+| Element        | `data-testid` | Suggested locator without a test ID                             |
+| -------------- | ------------- | --------------------------------------------------------------- |
+| Card number    | `card-number` | `frame.getByLabel('Card number')`                               |
+| Expiry / CVC   | —             | `frame.getByLabel('Expiry (MM/YY)')`, `frame.getByLabel('CVC')` |
+| Pay button     | —             | `frame.getByRole('button', { name: /^Pay \$/ })`                |
+| Declined error | —             | `frame.getByRole('alert')`                                      |
+| Approved       | —             | `frame.getByRole('status')`                                     |
+
+Test cards: `4242 4242 4242 4242` (approved), `4000 0000 0000 0002` (declined). Use any future expiry and any 3-digit CVC.
+
+## Orders (`/orders/[id]`, `/account/orders`)
+
+| Element          | `data-testid`   | Suggested locator without a test ID                                          |
+| ---------------- | --------------- | ---------------------------------------------------------------------------- |
+| Order number     | `order-number`  | `getByRole('heading', { level: 1 })` ("Order SL-000003")                     |
+| Thank-you banner | —               | `getByRole('status').filter({ hasText: 'Thank you' })`                       |
+| Order total      | `order-total`   | `getByRole('row', { name: /^Total/ })`                                       |
+| History table    | `order-history` | `getByRole('table', { name: 'Your orders, newest first' })`                  |
+| One history row  | —               | `getByRole('row').filter({ has: getByRole('link', { name: 'SL-000003' }) })` |
+| Status badge     | —               | `row.locator('[data-order-status]')` or `row.getByText('paid')`              |

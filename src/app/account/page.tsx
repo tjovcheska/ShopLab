@@ -27,6 +27,12 @@ export default async function AccountPage() {
         <dd>{dateFormat.format(user.createdAt)}</dd>
       </dl>
 
+      <p className="mt-6">
+        <Link href="/account/orders" className="text-indigo-700 underline">
+          View your order history
+        </Link>
+      </p>
+
       {user.role === "admin" && (
         <p className="mt-6">
           <Link href="/admin" className="text-indigo-700 underline">

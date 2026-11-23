@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Hide the "Open Next.js Dev Tools" button in `npm run dev`: its name
+  // contains "Next", so getByRole('button', { name: 'Next' }) would match it
+  // as well as the checkout's Next button. Errors are still shown.
+  devIndicators: false,
   // Cache Components is intentionally OFF (see docs/DECISIONS.md):
   // every page renders per request, and visited routes are not kept in the
   // DOM as hidden <Activity> trees, so Playwright locators see one page only.

@@ -25,17 +25,17 @@ cp .env.example .env
 
 ## Scripts
 
-| Script               | What it does                                                     |
-| -------------------- | ---------------------------------------------------------------- |
-| `npm run dev`        | Start the development server                                     |
-| `npm run build`      | Production build                                                 |
-| `npm start`          | Serve the production build                                       |
-| `npm run lint`       | ESLint                                                           |
-| `npm run typecheck`  | Generate Next.js route types and run `tsc`                       |
-| `npm run format`     | Format all files with Prettier (`format:check` only checks)      |
-| `npm run db:migrate` | Create/apply a migration after editing `prisma/schema.prisma`    |
-| `npm run db:seed`    | Wipe all tables and insert the seed data again                   |
-| `npm run db:reset`   | Drop the database, re-apply all migrations, regenerate, and seed |
+| Script               | What it does                                                                              |
+| -------------------- | ----------------------------------------------------------------------------------------- |
+| `npm run dev`        | Start the development server                                                              |
+| `npm run build`      | Production build                                                                          |
+| `npm start`          | Serve the production build                                                                |
+| `npm run lint`       | ESLint                                                                                    |
+| `npm run typecheck`  | Generate Next.js route types and run `tsc`                                                |
+| `npm run format`     | Format all files with Prettier (`format:check` only checks)                               |
+| `npm run db:migrate` | Create/apply a migration after editing `prisma/schema.prisma`, then regenerate the client |
+| `npm run db:seed`    | Wipe all tables and insert the seed data again                                            |
+| `npm run db:reset`   | Drop the database, re-apply all migrations, regenerate, and seed                          |
 
 The seed is deterministic: every run produces the same ids, dates, and data.
 
@@ -50,6 +50,17 @@ The seed is deterministic: every run produces the same ids, dates, and data.
 | `admin@shoplab.test` | `Admin123!`    | admin                        |
 
 The seed also contains 5 categories, 40 products (5 of them out of stock), and 12 reviews.
+
+## Test payment cards
+
+Checkout payments happen inside an iframe (`/embed/payment`):
+
+| Card number           | Result                         |
+| --------------------- | ------------------------------ |
+| `4242 4242 4242 4242` | Approved                       |
+| `4000 0000 0000 0002` | Declined (error inside iframe) |
+
+Use any future expiry date (MM/YY) and any 3-digit CVC.
 
 ## Environment variables
 

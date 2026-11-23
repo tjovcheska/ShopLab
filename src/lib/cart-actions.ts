@@ -76,3 +76,43 @@ export async function addToCart(
     message: `${quantity} × ${product.name}`,
   };
 }
+
+export type CartChangeResult = { ok: true } | { ok: false; message: string };
+
+/** Sets a cart line's quantity (1 to the product's stock). */
+export async function updateCartItemQuantity(
+  cartItemId: number,
+  quantity: number,
+): Promise<CartChangeResult> {
+  const user = await getCurrentUser();
+  if (!user) return { ok: false, message: "Please log in." };
+
+  const item = await db.cartItem.findFirst({
+    where: { id: cartItemId, userId: user.id },
+    include: { product: true },
+  });
+  if (!item)
+    return { ok: false, message: "This item is no longer in your cart." };
+  if (!Number.isInteger(quantity) || quantity < 1) {
+    return { ok: false, message: "Quantity must be at least 1." };
+  }
+  if (quantity > item.product.stock) {
+    return {
+      ok: false,
+      message: `Only ${item.product.stock} of ${item.product.name} in stock.`,
+    };
+  }
+
+  await db.cartItem.update({ where: { id: item.id }, data: { quantity } });
+  return { ok: true };
+}
+
+export async function removeCartItem(
+  cartItemId: number,
+): Promise<CartChangeResult> {
+  const user = await getCurrentUser();
+  if (!user) return { ok: false, message: "Please log in." };
+  // deleteMany so a missing or someone else's item is simply a no-op.
+  await db.cartItem.deleteMany({ where: { id: cartItemId, userId: user.id } });
+  return { ok: true };
+}

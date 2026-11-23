@@ -517,6 +517,7 @@ export const pastOrders = [
   {
     user: "alice@shoplab.test",
     status: "shipped" as const,
+    deliveryMethod: "standard",
     createdAt: "2026-09-14T10:30:00.000Z",
     deliveryDate: "2026-09-18T00:00:00.000Z",
     shippingAddress: aliceAddress,
@@ -528,6 +529,7 @@ export const pastOrders = [
   {
     user: "alice@shoplab.test",
     status: "paid" as const,
+    deliveryMethod: "express",
     createdAt: "2026-10-28T16:05:00.000Z",
     deliveryDate: "2026-11-03T00:00:00.000Z",
     shippingAddress: aliceAddress,
