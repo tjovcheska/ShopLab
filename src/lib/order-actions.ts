@@ -1,18 +1,13 @@
 "use server";
-// Placing an order: the final step of the checkout wizard.
+// Placing an order: the final step of the checkout wizard. The rules live in
+// src/lib/services/orders.ts, shared with POST /api/v1/orders.
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { getCart } from "@/lib/cart";
-import { getDeliveryOption } from "@/lib/checkout-options";
-import { isAcceptableDeliveryDate, toISODate } from "@/lib/dates";
-import { db } from "@/lib/db";
+import { ShopError } from "@/lib/errors";
 import { checkPaymentToken, markPaymentUsed } from "@/lib/payment";
-import {
-  shippingSchema,
-  type DeliveryInput,
-  type ShippingInput,
-} from "@/lib/validation/checkout";
+import { createOrderFromCart } from "@/lib/services/orders";
+import type { DeliveryInput, ShippingInput } from "@/lib/validation/checkout";
 
 /** Only returned on failure; on success the action redirects. */
 export type PlaceOrderResult = {
@@ -22,7 +17,11 @@ export type PlaceOrderResult = {
   fix: "cart" | "shipping" | "delivery" | "payment";
 };
 
-class OutOfStockError extends Error {}
+const FIX_FOR_CODE: Record<string, PlaceOrderResult["fix"]> = {
+  INVALID_SHIPPING: "shipping",
+  INVALID_DELIVERY: "delivery",
+  PAYMENT_INVALID: "payment",
+};
 
 export async function placeOrder(input: {
   shipping: ShippingInput;
@@ -34,82 +33,31 @@ export async function placeOrder(input: {
     return { ok: false, fix: "cart", message: "Please log in again." };
   }
 
-  // Everything is validated again: the browser's checks can be bypassed.
-  const shipping = shippingSchema.safeParse(input.shipping);
-  if (!shipping.success) {
-    return {
-      ok: false,
-      fix: "shipping",
-      message: "Check your shipping address.",
-    };
-  }
-  const deliveryOption = getDeliveryOption(input.delivery.method);
-  if (
-    !deliveryOption ||
-    !isAcceptableDeliveryDate(input.delivery.date, toISODate(new Date()))
-  ) {
-    return {
-      ok: false,
-      fix: "delivery",
-      message: "Choose a valid delivery date.",
-    };
-  }
-
-  const cart = await getCart(user.id);
-  if (cart.items.length === 0) {
-    return { ok: false, fix: "cart", message: "Your cart is empty." };
-  }
-  const totalCents = cart.subtotalCents + deliveryOption.priceCents;
-
-  const payment = checkPaymentToken(input.paymentToken, user.id, totalCents);
-  if ("error" in payment) {
-    return { ok: false, fix: "payment", message: payment.error };
-  }
-
   let orderId: number;
   try {
-    const order = await db.$transaction(async (tx) => {
-      // Take each item out of stock. The `stock >= quantity` condition makes
-      // this safe even if two customers buy the last item at the same time.
-      for (const item of cart.items) {
-        const updated = await tx.product.updateMany({
-          where: { id: item.product.id, stock: { gte: item.quantity } },
-          data: { stock: { decrement: item.quantity } },
-        });
-        if (updated.count === 0) throw new OutOfStockError(item.product.name);
-      }
-
-      const created = await tx.order.create({
-        data: {
-          userId: user.id,
-          status: "paid",
+    const order = await createOrderFromCart(
+      user.id,
+      { shippingAddress: input.shipping, delivery: input.delivery },
+      // Pay with the token the payment iframe sent to the checkout page.
+      (totalCents) => {
+        const payment = checkPaymentToken(
+          input.paymentToken,
+          user.id,
           totalCents,
-          shippingCents: deliveryOption.priceCents,
-          deliveryMethod: deliveryOption.id,
-          deliveryDate: new Date(`${input.delivery.date}T00:00:00.000Z`),
-          shippingAddress: shipping.data,
-          items: {
-            create: cart.items.map((item) => ({
-              productId: item.product.id,
-              quantity: item.quantity,
-              priceCents: item.product.priceCents,
-            })),
-          },
-        },
-      });
-
-      await tx.cartItem.deleteMany({ where: { userId: user.id } });
-      return created;
-    });
-
-    markPaymentUsed(payment.paymentId);
+        );
+        if ("error" in payment) {
+          throw new ShopError(400, "PAYMENT_INVALID", payment.error);
+        }
+        return () => markPaymentUsed(payment.paymentId);
+      },
+    );
     orderId = order.id;
   } catch (error) {
-    if (error instanceof OutOfStockError) {
+    if (error instanceof ShopError) {
       return {
         ok: false,
-        fix: "cart",
-        message: `Not enough stock left for ${error.message}. Update your cart and try again. You have not been charged.`,
+        fix: FIX_FOR_CODE[error.code] ?? "cart",
+        message: error.message,
       };
     }
     throw error;

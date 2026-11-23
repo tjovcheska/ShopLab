@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { z } from "zod";
+import { fieldErrors } from "@/lib/errors";
 
 /**
  * Every API error uses the same JSON shape:
@@ -19,12 +20,7 @@ export function apiError(
 
 /** 400 response listing which query/body fields were invalid. */
 export function validationError(error: z.ZodError) {
-  const fields: Record<string, string> = {};
-  for (const issue of error.issues) {
-    const key = issue.path.join(".") || "(root)";
-    fields[key] ??= issue.message;
-  }
   return apiError(400, "VALIDATION_ERROR", "Request validation failed.", {
-    fields,
+    fields: fieldErrors(error),
   });
 }

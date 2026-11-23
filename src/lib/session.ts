@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { createSignedToken, verifySignedToken } from "@/lib/signing";
 
 export const SESSION_COOKIE = "shoplab_session";
-const SESSION_MAX_AGE_SECONDS = 7 * 24 * 60 * 60; // 7 days
+export const SESSION_MAX_AGE_SECONDS = 7 * 24 * 60 * 60; // 7 days
 
 export function createSessionToken(userId: number): string {
   return createSignedToken("session", { uid: userId }, SESSION_MAX_AGE_SECONDS);

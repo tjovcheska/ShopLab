@@ -62,6 +62,20 @@ Checkout payments happen inside an iframe (`/embed/payment`):
 
 Use any future expiry date (MM/YY) and any 3-digit CVC.
 
+## REST API
+
+The JSON API lives at `/api/v1`. It's documented at [`/api-docs`](http://localhost:3000/api-docs), and the OpenAPI document is at `/api/v1/openapi.json`.
+
+```bash
+# Log in and use the token
+TOKEN=$(curl -s -X POST localhost:3000/api/v1/auth/login \
+  -H 'content-type: application/json' \
+  -d '{"email":"alice@shoplab.test","password":"Password123!"}' | jq -r .token)
+curl -s localhost:3000/api/v1/cart -H "Authorization: Bearer $TOKEN"
+```
+
+Every protected endpoint also accepts the website's `shoplab_session` cookie.
+
 ## Environment variables
 
 All variables are documented in [.env.example](.env.example).

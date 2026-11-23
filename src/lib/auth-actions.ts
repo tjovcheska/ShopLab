@@ -1,9 +1,9 @@
 "use server";
 // Server Actions for the register, login, and logout forms.
-import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
-import { db } from "@/lib/db";
 import { safeRedirectPath } from "@/lib/auth";
+import { ShopError } from "@/lib/errors";
+import { authenticate, createUser } from "@/lib/services/users";
 import { clearSessionCookie, setSessionCookie } from "@/lib/session";
 import {
   loginSchema,
@@ -27,21 +27,15 @@ export async function registerAction(
   if (!result.success) return { fieldErrors: result.fieldErrors };
 
   const { name, email, password } = result.data;
-  const existing = await db.user.findUnique({ where: { email } });
-  if (existing) {
-    return {
-      fieldErrors: { email: "An account with this email already exists." },
-    };
+  let user;
+  try {
+    user = await createUser({ name, email, password });
+  } catch (error) {
+    if (error instanceof ShopError && error.code === "EMAIL_TAKEN") {
+      return { fieldErrors: { email: error.message } };
+    }
+    throw error;
   }
-
-  const user = await db.user.create({
-    data: {
-      name,
-      email,
-      passwordHash: await bcrypt.hash(password, 10),
-      role: "customer",
-    },
-  });
 
   await setSessionCookie(user.id);
   redirect(safeRedirectPath(formData.get("next")));
@@ -61,11 +55,8 @@ export async function loginAction(
     return { error: "Enter your email and password." };
   }
 
-  const { email, password } = parsed.data;
-  const user = await db.user.findUnique({ where: { email } });
-  const passwordOk =
-    user !== null && (await bcrypt.compare(password, user.passwordHash));
-  if (!user || !passwordOk) {
+  const user = await authenticate(parsed.data.email, parsed.data.password);
+  if (!user) {
     // Same message for unknown email and wrong password, on purpose.
     return { error: "Invalid email or password." };
   }

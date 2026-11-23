@@ -357,3 +357,12 @@ Use `setInputFiles()` with paths or `{ name, mimeType, buffer }` objects. Files 
 | Click counters       | `covered-clicks`, `scroll-clicks`, `far-clicks`                               | —                                                                                                    |
 | Scroll box           | `scroll-box`                                                                  | the button inside is scrolled into view automatically                                                |
 | Off-screen element   | `off-screen`                                                                  | counts as visible; `toBeInViewport()` fails                                                          |
+
+## API docs (`/api-docs`)
+
+| Element        | `data-testid` | Suggested locator                                                          |
+| -------------- | ------------- | -------------------------------------------------------------------------- |
+| Endpoint index | —             | `getByRole('navigation', { name: 'Endpoints' })`                           |
+| One endpoint   | —             | `getByRole('article', { name: 'post /auth/login' })` (method in lowercase) |
+| Access badge   | —             | `endpoint.getByText('Admin only')` / `'Login required'` / `'Public'`       |
+| Response row   | —             | `endpoint.getByRole('row', { name: /^401 / })`                             |
