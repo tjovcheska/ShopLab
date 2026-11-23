@@ -8,6 +8,7 @@ import { Rating } from "@/components/rating";
 import { db } from "@/lib/db";
 import { formatPrice } from "@/lib/format";
 import { LiveStock } from "./live-stock";
+import { ProductLinks } from "./product-links";
 
 // One query shared by generateMetadata and the page.
 const getProduct = cache((slug: string) =>
@@ -94,6 +95,7 @@ export default async function ProductPage({
           )}
           <LiveStock productId={product.id} initialStock={product.stock} />
           <p className="text-gray-700">{product.description}</p>
+          <ProductLinks slug={product.slug} />
           <div className="max-w-sm">
             <AddToCart
               productId={product.id}

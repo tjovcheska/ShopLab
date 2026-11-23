@@ -234,3 +234,51 @@ Test cards: `4242 4242 4242 4242` (approved), `4000 0000 0000 0002` (declined). 
 | History table    | `order-history` | `getByRole('table', { name: 'Your orders, newest first' })`                  |
 | One history row  | —               | `getByRole('row').filter({ has: getByRole('link', { name: 'SL-000003' }) })` |
 | Status badge     | —               | `row.locator('[data-order-status]')` or `row.getByText('paid')`              |
+
+## Playground: frames (`/playground/frames`)
+
+Frame tree: page → `Outer frame` (name `outer`) → `Inner frame` (name `inner`), plus `Sibling frame` (name `sibling`) next to the outer frame.
+
+| Element                  | `data-testid`   | Suggested locator                                                                                     |
+| ------------------------ | --------------- | ----------------------------------------------------------------------------------------------------- |
+| Outer frame              | —               | `page.frameLocator('iframe[title="Outer frame"]')` or `page.getByTitle('Outer frame').contentFrame()` |
+| Inner frame (nested)     | —               | `outer.frameLocator('iframe[title="Inner frame"]')` or `page.frame({ name: 'inner' })`                |
+| Sibling frame            | —               | `page.frameLocator('iframe[name="sibling"]')`                                                         |
+| Outer: name + Greet      | —               | `outer.getByLabel('Your name')`, `outer.getByRole('button', { name: 'Greet' })`                       |
+| Inner: Increment counter | `inner-counter` | `inner.getByRole('button', { name: 'Increment' })`                                                    |
+| Inner: checkbox          | —               | `inner.getByRole('checkbox', { name: 'I found the inner frame' })`                                    |
+| Sibling: newsletter      | —               | `sibling.getByLabel('Email')`, `sibling.getByRole('button', { name: 'Subscribe' })`                   |
+
+A locator on the outer frame can't see inside the inner frame. You have to enter each level.
+
+## Product detail: new tab and popup
+
+| Element         | `data-testid`  | Suggested locator                                                                             |
+| --------------- | -------------- | --------------------------------------------------------------------------------------------- |
+| Size guide link | —              | `getByRole('link', { name: 'Size guide' })` (opens a new tab: `context.waitForEvent('page')`) |
+| Share button    | `share-button` | `getByRole('button', { name: 'Share' })` (opens a popup: `page.waitForEvent('popup')`)        |
+
+## Size guide (`/size-guide`)
+
+| Element      | `data-testid`        | Suggested locator                                                               |
+| ------------ | -------------------- | ------------------------------------------------------------------------------- |
+| Product name | `size-guide-product` | `getByText(/^For /)`                                                            |
+| Size tables  | —                    | `getByRole('table', { name: 'Clothing sizes (cm)' })`, `{ name: 'Shoe sizes' }` |
+
+## Share popup (`/popup/share`)
+
+| Element       | `data-testid`   | Suggested locator                                                                                                                 |
+| ------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Product link  | —               | `popup.getByLabel('Link to this product')`                                                                                        |
+| Copy link     | —               | `popup.getByRole('button', { name: 'Copy link' })` (needs `permissions: ['clipboard-read', 'clipboard-write']` to read it back)   |
+| Share to feed | `share-to-feed` | `popup.getByRole('button', { name: 'Share to the ShopLab feed' })`, then the popup closes and a toast appears on the product page |
+| Close         | —               | `popup.getByRole('button', { name: 'Close' })`                                                                                    |
+
+## Playground: dialogs (`/playground/dialogs`)
+
+| Element | `data-testid`   | Suggested locator                                                                |
+| ------- | --------------- | -------------------------------------------------------------------------------- |
+| Buttons | —               | `getByRole('button', { name: 'Show alert' })`, `'Show confirm'`, `'Show prompt'` |
+| Result  | `dialog-result` | `getByRole('status')`                                                            |
+
+Register `page.once('dialog', …)` **before** clicking. `dialog.accept()` on a prompt submits an empty string; use `dialog.accept(dialog.defaultValue())` to keep "Guest". Without a handler, Playwright dismisses dialogs (confirm → Cancel).

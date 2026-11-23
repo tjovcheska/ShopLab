@@ -4,9 +4,10 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 /**
- * Wraps every page in the banner, header, and footer, except /embed/* pages.
- * Those are shown inside iframes (e.g. the payment form at checkout) and
- * must not contain a second copy of the site around them.
+ * Wraps every page in the banner, header, and footer, except:
+ *   /embed/*  pages shown inside iframes (payment form, frames playground)
+ *   /popup/*  pages opened in small popup windows (share)
+ * Those must not contain a second copy of the site around them.
  */
 export function SiteChrome({
   banner,
@@ -20,7 +21,9 @@ export function SiteChrome({
   children: ReactNode;
 }) {
   const pathname = usePathname();
-  if (pathname.startsWith("/embed/")) return children;
+  if (pathname.startsWith("/embed/") || pathname.startsWith("/popup/")) {
+    return children;
+  }
 
   return (
     <>
