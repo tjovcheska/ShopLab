@@ -22,6 +22,18 @@ ShopLab gives `data-testid` to only about half of its interactive elements. Ever
 No test IDs. Product cards are `<article>` elements named by their heading:
 `getByRole('article', { name: 'Yoga Mat' })`.
 
+## Product card (home page and `/products`)
+
+| Element            | `data-testid` | Suggested locator without a test ID                                           |
+| ------------------ | ------------- | ----------------------------------------------------------------------------- |
+| Card               | —             | `getByRole('article', { name: 'Yoga Mat' })`                                  |
+| Name link          | —             | `card.getByRole('link', { name: 'Yoga Mat' })`                                |
+| Add to cart button | —             | `card.getByRole('button', { name: 'Add to cart' })` (same name on every card) |
+| Out of stock badge | —             | `card.getByText('Out of stock')`                                              |
+| Feedback message   | —             | `card.getByRole('status')` / `card.getByRole('alert')`                        |
+
+"Classic T-Shirt" and "Classic T-Shirt (Pack of 3)" are both products, so `{ name: 'Classic T-Shirt' }` matches two cards unless you add `exact: true`.
+
 ## Gotcha: Next.js route announcer (`role="alert"`)
 
 Next.js adds a hidden `<next-route-announcer>` element to every page. Inside its shadow root is a `role="alert"` element, and Playwright locators pierce shadow DOM. So a bare `page.getByRole('alert')` always matches that announcer. Once a real error alert appears, it matches two elements and fails Playwright's strict mode. Always scope alerts, for example `getByRole('form', { name: 'Log in' }).getByRole('alert')`, or filter by text.
@@ -60,3 +72,42 @@ Next.js adds a hidden `<next-route-announcer>` element to every page. Inside its
 | Email value | `account-email` | `getByRole('definition').filter({ hasText: '@' })`               |
 | Name value  | —               | `getByText('Welcome back,')` or the `<dd>` after the "Name" term |
 | Admin stats | —               | `getByText('Users', { exact: true })` (the `<dd>` follows it)    |
+
+## Products (`/products`)
+
+| Element               | `data-testid`      | Suggested locator without a test ID                                                                                    |
+| --------------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| Filters sidebar       | —                  | `getByRole('complementary', { name: 'Filters' })`                                                                      |
+| Sort dropdown         | `sort-select`      | `getByLabel('Sort by')`                                                                                                |
+| Category checkboxes   | —                  | `getByRole('checkbox', { name: 'Books' })`                                                                             |
+| Price sliders         | —                  | `getByLabel('Minimum price')`, `getByLabel('Maximum price')` (use `fill('20')`)                                        |
+| In stock only         | —                  | `getByRole('switch', { name: 'In stock only' })`                                                                       |
+| Clear filters         | —                  | `getByRole('button', { name: 'Clear filters' })`                                                                       |
+| Results summary       | `results-count`    | `getByRole('heading', { name: /^Showing / })`                                                                          |
+| Product grid          | `product-grid`     | `getByRole('article')` within the results                                                                              |
+| Loading skeleton card | `product-skeleton` | `getByRole('status')` containing "Loading products…"                                                                   |
+| Load error + retry    | —                  | `getByRole('alert').filter({ hasText: 'Could not load products' })`, then `getByRole('button', { name: 'Try again' })` |
+| Pagination            | —                  | `getByRole('navigation', { name: 'Pagination' }).getByRole('link', { name: 'Page 2' })`                                |
+
+Price slider changes reach the URL 300 ms after the last change. Wait for the URL or the results, not a fixed time.
+
+## Product detail (`/products/[slug]`)
+
+| Element        | `data-testid`    | Suggested locator without a test ID                          |
+| -------------- | ---------------- | ------------------------------------------------------------ |
+| Breadcrumb     | —                | `getByRole('navigation', { name: 'Breadcrumb' })`            |
+| Product name   | —                | `getByRole('heading', { level: 1 })`                         |
+| Quantity input | `quantity-input` | `getByLabel('Quantity')` (`min` 1, `max` = stock)            |
+| Add to cart    | —                | `getByRole('button', { name: 'Add to cart' })`               |
+| Reviews list   | `reviews-list`   | `getByRole('heading', { name: /^Customer reviews/ })`        |
+| One review     | —                | `getByRole('article', { name: 'Review by Alice Anderson' })` |
+
+## Chaos settings (`/chaos`) and banner
+
+| Element          | `data-testid`                        | Suggested locator without a test ID                                         |
+| ---------------- | ------------------------------------ | --------------------------------------------------------------------------- |
+| Chaos banner     | `chaos-banner`                       | `getByText(/^Chaos mode:/)`                                                 |
+| Delay input      | —                                    | `getByLabel('Delay (ms)')`                                                  |
+| Flaky input      | —                                    | `getByLabel('Flaky requests (%)')`                                          |
+| Save / Clear     | —                                    | `getByRole('button', { name: 'Save' })`, `{ name: 'Clear chaos settings' }` |
+| Values in effect | `effective-delay`, `effective-flaky` | `getByRole('row', { name: /Delay/ }).getByRole('cell').last()`              |
