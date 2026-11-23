@@ -1,0 +1,54 @@
+# Two ShopLab environments from one image, for practicing baseURL and
+# multi-environment Playwright configs:
+#
+#   shoplab          http://localhost:3000   chaos off
+#   shoplab-staging  http://localhost:3001   every API response delayed 500 ms
+#
+#   docker compose up --build        start both (Ctrl+C to stop)
+#   docker compose up -d --build     start in the background
+#   docker compose down              stop and remove
+#
+# Each container seeds its own database on every start, and test hooks
+# (/api/test/*, including /api/test/health) are enabled in both.
+
+# Shared settings. The fixed secret is fine: these are local practice
+# environments, not production.
+x-shoplab-env: &shoplab-env
+  SESSION_SECRET: shoplab-docker-practice-secret
+  TEST_HOOKS_ENABLED: "true"
+  CHAOS_FLAKY_PERCENT: "0"
+
+x-healthcheck: &healthcheck
+  test:
+    - CMD
+    - node
+    - -e
+    - "fetch('http://localhost:3000/api/test/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+  interval: 5s
+  timeout: 3s
+  retries: 3
+  start_period: 60s
+
+services:
+  shoplab:
+    build: .
+    image: shoplab:local
+    ports:
+      - "3000:3000"
+    environment:
+      <<: *shoplab-env
+      CHAOS_DELAY_MS: "0"
+    healthcheck: *healthcheck
+
+  shoplab-staging:
+    image: shoplab:local
+    # Built by the `shoplab` service; start after it so the image exists.
+    depends_on:
+      shoplab:
+        condition: service_started
+    ports:
+      - "3001:3000"
+    environment:
+      <<: *shoplab-env
+      CHAOS_DELAY_MS: "500"
+    healthcheck: *healthcheck

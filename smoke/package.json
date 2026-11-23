@@ -1,0 +1,11 @@
+{
+  "name": "shoplab-smoke",
+  "private": true,
+  "description": "Instructor-only smoke test: is ShopLab up? Not for students.",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.1"
+  }
+}

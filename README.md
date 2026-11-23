@@ -76,6 +76,33 @@ curl -s localhost:3000/api/v1/cart -H "Authorization: Bearer $TOKEN"
 
 Every protected endpoint also accepts the website's `shoplab_session` cookie.
 
+## Docker (two environments)
+
+Needs a Docker runtime with Compose v2: Docker Desktop, OrbStack, or Colima (`brew install colima docker docker-compose && colima start`).
+
+```bash
+docker compose up --build        # Ctrl+C to stop; add -d to run in the background
+docker compose down
+```
+
+| Service           | URL                   | Settings                                         |
+| ----------------- | --------------------- | ------------------------------------------------ |
+| `shoplab`         | http://localhost:3000 | chaos off, test hooks on                         |
+| `shoplab-staging` | http://localhost:3001 | every API response delayed 500 ms, test hooks on |
+
+Each container applies migrations and loads the seed data on every start, so restarting gives fresh data.
+
+### Instructor smoke test
+
+`smoke/` holds a tiny Playwright suite (separate from any student tests) that checks the home page and `/api/test/health` in both environments:
+
+```bash
+cd smoke && npm install && npx playwright install chromium && cd ..
+npm run test:smoke                 # with both environments running
+```
+
+`docs/ci-example.yml` shows a GitHub Actions job that starts the containers, waits for health, and runs the smoke test. It's an example only, not an active workflow.
+
 ## Test support endpoints
 
 Only available when `TEST_HOOKS_ENABLED=true` (otherwise every `/api/test/*` path returns a 404). They ignore chaos settings.
@@ -119,7 +146,9 @@ src/
   lib/db.ts           Prisma client (better-sqlite3 adapter)
   generated/prisma/   generated Prisma client (gitignored)
 public/products/      product images
-docs/                 instructor docs (decisions, locators, …)
+docs/                 instructor docs (decisions, locators, CI example, …)
+smoke/                instructor smoke test (its own package)
+Dockerfile, docker-compose.yml, scripts/docker-start.sh
 ```
 
 ## Troubleshooting
