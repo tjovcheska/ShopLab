@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
   experimental: {
     // Enables forbidden(), which renders app/forbidden.tsx with HTTP 403.
     authInterrupts: true,
+    // Server Actions accept 1 MB by default. The upload playground allows
+    // 2 MB per file and several files per upload.
+    serverActions: { bodySizeLimit: "10mb" },
   },
   turbopack: {
     // Pin the project root so a stray lockfile in a parent folder is ignored.

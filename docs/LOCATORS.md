@@ -281,4 +281,79 @@ A locator on the outer frame can't see inside the inner frame. You have to enter
 | Buttons | —               | `getByRole('button', { name: 'Show alert' })`, `'Show confirm'`, `'Show prompt'` |
 | Result  | `dialog-result` | `getByRole('status')`                                                            |
 
-Register `page.once('dialog', …)` **before** clicking. `dialog.accept()` on a prompt submits an empty string; use `dialog.accept(dialog.defaultValue())` to keep "Guest". Without a handler, Playwright dismisses dialogs (confirm → Cancel).
+Register `page.once('dialog', …)` **before** clicking. `dialog.accept()` with no text on a prompt submits an empty string in Chromium and WebKit but keeps "Guest" in Firefox. Use `dialog.accept(dialog.defaultValue())` for the same result in every browser. Without a handler, Playwright dismisses dialogs (confirm → Cancel).
+
+## Playground: drag and drop (`/playground/drag-drop`)
+
+| Element          | `data-testid`                | Suggested locator                                            |
+| ---------------- | ---------------------------- | ------------------------------------------------------------ |
+| Sortable list    | `sortable-list`              | `getByRole('list', { name: 'Fruits' })`                      |
+| One item         | —                            | `list.getByRole('listitem').filter({ hasText: 'Apples' })`   |
+| Current order    | `sortable-order`             | `getByText(/^Order:/)`                                       |
+| Move buttons     | —                            | `getByRole('button', { name: 'Move Apples up' })`            |
+| Board columns    | `column-todo`, `column-done` | `getByRole('region', { name: 'To do' })`, `{ name: 'Done' }` |
+| Card move button | —                            | `getByRole('button', { name: 'Move “Set up CI” to To do' })` |
+
+Drag with `source.dragTo(target)`. Drop list items onto another item and cards onto a column.
+
+## Playground: shadow DOM (`/playground/shadow-dom`)
+
+| Element            | `data-testid`                                     | Suggested locator                                                                        |
+| ------------------ | ------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| A rating component | —                                                 | `locator('shoplab-rating#product')` or `getByRole('group', { name: 'Product quality' })` |
+| A star (in shadow) | —                                                 | `group.getByRole('button', { name: '4 stars' })`                                         |
+| Clear              | —                                                 | `group.getByRole('button', { name: 'Clear' })`                                           |
+| Result (light DOM) | `rating-result-product`, `rating-result-delivery` | `getByText(/^Product quality:/)`                                                         |
+
+Playwright locators pierce **open** shadow roots; `page.evaluate(() => document.querySelector(...))` doesn't. Both components have buttons "1 star" … "5 stars", so scope to one first.
+
+## Playground: upload and download (`/playground/upload`)
+
+| Element           | `data-testid`         | Suggested locator                                                                                 |
+| ----------------- | --------------------- | ------------------------------------------------------------------------------------------------- |
+| Single-file input | —                     | `getByRole('region', { name: 'Single file' }).getByLabel('Choose a file')`                        |
+| Multi-file input  | `multiple-file-input` | `getByLabel('Choose files')`                                                                      |
+| Upload buttons    | —                     | `region.getByRole('button', { name: 'Upload' })` (two on the page)                                |
+| Uploaded files    | —                     | `getByRole('list', { name: 'Single file: uploaded files' })`                                      |
+| Error             | —                     | `region.getByRole('alert')`                                                                       |
+| Download link     | —                     | `getByRole('link', { name: 'Download product list (CSV)' })` with `page.waitForEvent('download')` |
+
+Use `setInputFiles()` with paths or `{ name, mimeType, buffer }` objects. Files over 2 MB are rejected.
+
+## Playground: data table (`/playground/table`)
+
+| Element            | `data-testid`    | Suggested locator                                                                       |
+| ------------------ | ---------------- | --------------------------------------------------------------------------------------- |
+| Table              | `customer-table` | `getByRole('table', { name: 'Customers' })`                                             |
+| Filter             | —                | `getByLabel('Filter customers')`                                                        |
+| Sort a column      | —                | `getByRole('columnheader', { name: /Orders/ }).getByRole('button')` (check `aria-sort`) |
+| A specific row     | —                | `getByRole('row').filter({ hasText: 'Alex Smith' }).filter({ hasText: 'Toronto' })`     |
+| Row checkbox       | —                | `row.getByRole('checkbox')` (`'Select Alex Smith'` matches two rows!)                   |
+| Select all visible | —                | `getByRole('checkbox', { name: 'Select all visible customers' })`                       |
+| Selected count     | `selected-count` | `getByRole('status')`                                                                   |
+| Row count          | `row-count`      | `getByText(/^Showing \d+ of/)`                                                          |
+
+## Playground: hover (`/playground/hover`)
+
+| Element                  | `data-testid`       | Suggested locator                                                                                                      |
+| ------------------------ | ------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Menu trigger             | `shop-menu-trigger` | `getByText('Shop ▾')` → `hover()`                                                                                      |
+| Menu items               | —                   | `getByRole('button', { name: 'Clothing' })` (hidden until hover)                                                       |
+| Submenu                  | —                   | hover `getByText('Electronics')`, then `getByRole('button', { name: 'Headphones' })`                                   |
+| Tooltip (added on hover) | —                   | hover `getByText('Shipping info')`, then `getByRole('tooltip')`                                                        |
+| Tooltip (always in DOM)  | —                   | hover `getByText('Returns policy')`; `getByText('Free returns within 30 days.')` is attached but hidden before         |
+| Hover card buttons       | —                   | hover `getByRole('article', { name: 'Wireless Headphones' })`, then `getByRole('button', { name: 'Add to wishlist' })` |
+| Last action              | `hover-result`      | `getByRole('status')`                                                                                                  |
+
+## Playground: visibility (`/playground/visibility`)
+
+| Element              | `data-testid`                                                                 | Notes                                                                                                |
+| -------------------- | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Hidden variants      | `hidden-attribute`, `hidden-visibility`, `hidden-opacity`, `hidden-zero-size` | Only `hidden-opacity` counts as visible before "Show the messages"                                   |
+| Removable paragraph  | `removable`                                                                   | `toBeAttached()` / `not.toBeAttached()`                                                              |
+| Submit (disabled)    | —                                                                             | `getByRole('button', { name: 'Submit' })`, enabled after checking "I agree to the terms"             |
+| aria-disabled button | —                                                                             | `getByRole('button', { name: 'Looks disabled (aria-disabled)' })`, which `toBeDisabled()` passes for |
+| Covered button       | —                                                                             | `getByRole('button', { name: 'Covered button' })`; overlay: `overlay`                                |
+| Click counters       | `covered-clicks`, `scroll-clicks`, `far-clicks`                               | —                                                                                                    |
+| Scroll box           | `scroll-box`                                                                  | the button inside is scrolled into view automatically                                                |
+| Off-screen element   | `off-screen`                                                                  | counts as visible; `toBeInViewport()` fails                                                          |

@@ -3,8 +3,38 @@ import Link from "next/link";
 
 export const metadata: Metadata = { title: "Playground" };
 
-// Isolated practice pages for tricky UI. More pages arrive in Phase 7.
+// Isolated practice pages for tricky UI.
 const PAGES = [
+  {
+    href: "/playground/drag-drop",
+    name: "Drag and drop",
+    description: "A sortable list and a two-column task board.",
+  },
+  {
+    href: "/playground/shadow-dom",
+    name: "Shadow DOM",
+    description: "A <shoplab-rating> Web Component with an open shadow root.",
+  },
+  {
+    href: "/playground/upload",
+    name: "Upload and download",
+    description: "Single and multiple file upload, plus a CSV download.",
+  },
+  {
+    href: "/playground/table",
+    name: "Data table",
+    description: "Sorting, filtering, and row checkboxes with duplicate rows.",
+  },
+  {
+    href: "/playground/hover",
+    name: "Hover",
+    description: "Menus, tooltips, and buttons that appear only on hover.",
+  },
+  {
+    href: "/playground/visibility",
+    name: "Visibility",
+    description: "Hidden, removed, disabled, covered, and off-screen elements.",
+  },
   {
     href: "/playground/frames",
     name: "Frames",

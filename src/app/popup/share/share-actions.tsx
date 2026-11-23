@@ -12,6 +12,10 @@ const getServerOrigin = () => "";
 export function ShareActions({ name, slug }: { name: string; slug: string }) {
   const origin = useSyncExternalStore(subscribe, getOrigin, getServerOrigin);
   const link = `${origin}/products/${slug}`;
+  // origin is "" until React has hydrated in the browser. Until then the
+  // buttons have no click handlers, so keep them disabled; Playwright waits
+  // for enabled buttons, which avoids clicking a button that does nothing.
+  const hydrated = origin !== "";
   const [copied, setCopied] = useState<string | null>(null);
 
   async function copyLink() {
@@ -46,6 +50,7 @@ export function ShareActions({ name, slug }: { name: string; slug: string }) {
           <button
             type="button"
             onClick={copyLink}
+            disabled={!hydrated}
             className="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium hover:bg-gray-50"
           >
             Copy link
@@ -61,6 +66,7 @@ export function ShareActions({ name, slug }: { name: string; slug: string }) {
       <button
         type="button"
         onClick={shareToFeed}
+        disabled={!hydrated}
         data-testid="share-to-feed"
         className="rounded-md bg-indigo-600 px-4 py-2 font-medium text-white hover:bg-indigo-700"
       >
@@ -69,6 +75,7 @@ export function ShareActions({ name, slug }: { name: string; slug: string }) {
       <button
         type="button"
         onClick={() => window.close()}
+        disabled={!hydrated}
         className="rounded-md border border-gray-300 px-4 py-2 font-medium hover:bg-gray-50"
       >
         Close
