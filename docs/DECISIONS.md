@@ -38,3 +38,15 @@ Choices made where PLAN.md was ambiguous or where the toolchain forced a choice.
 - **The "In stock only" toggle** is a checkbox with `role="switch"`.
 - **Add to cart works now, but only when logged in.** Anonymous users go to `/login?next=<current page>`. It's a minimal server action that checks stock against what is already in the cart, then refreshes the header count. Phase 5 builds the cart page on top of it. Feedback is an inline `role="status"` or `role="alert"` message under the button. Phase 4 adds toasts.
 - **Pagination links** are real `<a href>` links named "Page N" (with `aria-current="page"` on the current one), plus Previous and Next. On the first and last page, Previous and Next are non-link text with `aria-disabled`.
+
+## Phase 4 — Search and dynamic elements
+
+- **Search matches product names only** (case-insensitive "contains", using SQLite `LIKE`), both in autocomplete and on `/search`. Matching descriptions made suggestions confusing: "co" matched "cotton" and "colour". The list API gained a `q` parameter and a `newest` sort.
+- **Autocomplete suggestions** come from `GET /api/v1/products?q=…&pageSize=6`, so chaos delay and flaky mode apply. Only results for the text currently typed are shown. While a request is in flight, a "Searching…" status shows instead of stale suggestions.
+- **Mouse highlighting uses `onMouseMove`, not `onMouseEnter`.** Otherwise a cursor resting where the list opens highlighted an option, and `Enter` opened that product instead of searching. That bug showed up in testing.
+- **`/search` is server-rendered** and lists every match (no pagination, since there are only 40 products). With JavaScript off, the header form still submits to it.
+- **No `<Suspense>` around the header search box or the chaos banner.** Content inside a Suspense boundary is streamed hidden and revealed by a script, so with JavaScript off the search form was invisible. Every route renders dynamically, so `useSearchParams` works during server rendering without Suspense.
+- **Toasts** live in a provider in the root layout and are removed exactly 3 s after they appear (one timer each). They stack, and each can be dismissed. Only _successful_ add-to-cart uses a toast; errors stay as an inline `role="alert"` next to the button.
+- **Infinite scroll** uses an IntersectionObserver on a sentinel below the list. The observer is re-created each time a page finishes loading. A new observer reports the sentinel's current position, so very tall windows keep loading until the sentinel is off-screen, with no scroll-position maths. There is no auto-retry on error; a "Try again" button is shown.
+- **New arrivals** waits a random 1000–3000 ms, then fetches the 4 newest products from the API. This is the only random timing in the app, apart from flaky mode. If the fetch fails, the widget never appears.
+- **Live stock** re-fetches `GET /api/v1/products/:id` (Phase 8's endpoint, built now). Each refresh is scheduled 5 s after the previous one _finishes_, so chaos delays never stack up requests. On failure the last value stays, with a "Retrying…" note.

@@ -7,6 +7,7 @@ import { AddToCart } from "@/components/add-to-cart";
 import { Rating } from "@/components/rating";
 import { db } from "@/lib/db";
 import { formatPrice } from "@/lib/format";
+import { LiveStock } from "./live-stock";
 
 // One query shared by generateMetadata and the page.
 const getProduct = cache((slug: string) =>
@@ -86,15 +87,12 @@ export default async function ProductPage({
           <p className="text-2xl font-bold">
             {formatPrice(product.priceCents)}
           </p>
-          {outOfStock ? (
+          {outOfStock && (
             <p className="w-fit rounded bg-gray-800 px-2 py-0.5 text-sm font-semibold text-white">
               Out of stock
             </p>
-          ) : (
-            <p className="text-sm text-green-700">
-              In stock: {product.stock} available
-            </p>
           )}
+          <LiveStock productId={product.id} initialStock={product.stock} />
           <p className="text-gray-700">{product.description}</p>
           <div className="max-w-sm">
             <AddToCart

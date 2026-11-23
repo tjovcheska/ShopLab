@@ -14,6 +14,7 @@ const ORDER_BY: Record<SortValue, Prisma.ProductOrderByWithRelationInput[]> = {
   "price-asc": [{ priceCents: "asc" }, { name: "asc" }, { id: "asc" }],
   "price-desc": [{ priceCents: "desc" }, { name: "asc" }, { id: "asc" }],
   "rating-desc": [{ rating: "desc" }, { name: "asc" }, { id: "asc" }],
+  newest: [{ createdAt: "desc" }, { id: "desc" }],
 };
 
 export const productListSelect = {
@@ -31,6 +32,8 @@ export async function listProducts(
   query: ProductQuery,
 ): Promise<ProductListResponse> {
   const where: Prisma.ProductWhereInput = {};
+  // SQLite's LIKE (used by `contains`) ignores case for ASCII letters.
+  if (query.q) where.name = { contains: query.q };
   if (query.category.length > 0) {
     where.category = { slug: { in: query.category } };
   }
@@ -69,4 +72,14 @@ export async function getMaxPriceDollars(): Promise<number> {
   const result = await db.product.aggregate({ _max: { priceCents: true } });
   const cents = result._max.priceCents ?? 0;
   return Math.ceil(cents / 1000) * 10;
+}
+
+export const productDetailSelect = {
+  ...productListSelect,
+  description: true,
+  createdAt: true,
+} satisfies Prisma.ProductSelect;
+
+export function getProductById(id: number) {
+  return db.product.findUnique({ where: { id }, select: productDetailSelect });
 }

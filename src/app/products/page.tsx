@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { db } from "@/lib/db";
@@ -23,7 +24,15 @@ export default async function ProductsPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-3xl font-bold">Products</h1>
+      <div className="mb-6 flex flex-wrap items-baseline justify-between gap-2">
+        <h1 className="text-3xl font-bold">Products</h1>
+        <Link
+          href="/products/all"
+          className="text-sm text-indigo-700 underline"
+        >
+          View all products on one page (infinite scroll)
+        </Link>
+      </div>
       <div className="grid gap-8 lg:grid-cols-[16rem_1fr]">
         <aside aria-label="Filters">
           <Suspense>

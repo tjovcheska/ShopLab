@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { useToast } from "@/components/toast";
 import { addToCart } from "@/lib/cart-actions";
 
 type AddToCartProps = {
@@ -11,8 +12,6 @@ type AddToCartProps = {
   withQuantity?: boolean;
 };
 
-type Feedback = { kind: "success" | "error"; message: string } | null;
-
 export function AddToCart({
   productId,
   stock,
@@ -20,17 +19,16 @@ export function AddToCart({
 }: AddToCartProps) {
   const router = useRouter();
   const [quantity, setQuantity] = useState("1");
-  const [feedback, setFeedback] = useState<Feedback>(null);
+  // Errors stay next to the button; success is announced with a toast.
+  const [error, setError] = useState<string | null>(null);
+  const showToast = useToast();
   const [pending, startTransition] = useTransition();
   const outOfStock = stock === 0;
 
   function handleClick() {
     const amount = Number(quantity);
     if (!Number.isInteger(amount) || amount < 1 || amount > stock) {
-      setFeedback({
-        kind: "error",
-        message: `Enter a quantity between 1 and ${stock}.`,
-      });
+      setError(`Enter a quantity between 1 and ${stock}.`);
       return;
     }
 
@@ -41,12 +39,14 @@ export function AddToCart({
         router.push(`/login?next=${encodeURIComponent(here)}`);
         return;
       }
-      setFeedback({
-        kind: result.ok ? "success" : "error",
-        message: result.message,
-      });
+      if (!result.ok) {
+        setError(result.message);
+        return;
+      }
+      setError(null);
+      showToast({ title: "Added to cart", description: result.message });
       // Re-render server components so the header cart count updates.
-      if (result.ok) router.refresh();
+      router.refresh();
     });
   }
 
@@ -84,12 +84,9 @@ export function AddToCart({
           {pending ? "Adding…" : "Add to cart"}
         </button>
       </div>
-      {feedback && (
-        <p
-          role={feedback.kind === "error" ? "alert" : "status"}
-          className={`text-sm ${feedback.kind === "error" ? "text-red-600" : "text-green-700"}`}
-        >
-          {feedback.message}
+      {error && (
+        <p role="alert" className="text-sm text-red-600">
+          {error}
         </p>
       )}
     </div>

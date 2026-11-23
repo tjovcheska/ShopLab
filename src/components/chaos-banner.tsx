@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { getChaosSettings } from "@/lib/chaos";
 import { ChaosBannerView } from "./chaos-banner-view";
 
@@ -8,9 +7,6 @@ import { ChaosBannerView } from "./chaos-banner-view";
  */
 export async function ChaosBanner() {
   const settings = await getChaosSettings();
-  return (
-    <Suspense>
-      <ChaosBannerView settings={settings} />
-    </Suspense>
-  );
+  // Not wrapped in <Suspense>, so it also shows with JavaScript disabled.
+  return <ChaosBannerView settings={settings} />;
 }

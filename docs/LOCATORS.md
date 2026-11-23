@@ -6,7 +6,7 @@ ShopLab gives `data-testid` to only about half of its interactive elements. Ever
 
 | Element              | `data-testid`         | Suggested locator without a test ID                                |
 | -------------------- | --------------------- | ------------------------------------------------------------------ |
-| Header search input  | `header-search-input` | `getByRole('searchbox', { name: 'Search products' })`              |
+| Header search input  | `header-search-input` | `getByRole('combobox', { name: 'Search products' })`               |
 | Header search button | —                     | `getByRole('search').getByRole('button', { name: 'Search' })`      |
 | Logo / home link     | —                     | `getByRole('link', { name: 'ShopLab' })`                           |
 | Main nav links       | —                     | `getByRole('navigation', { name: 'Main' }).getByRole('link', …)`   |
@@ -19,8 +19,14 @@ ShopLab gives `data-testid` to only about half of its interactive elements. Ever
 
 ## Home page (`/`)
 
-No test IDs. Product cards are `<article>` elements named by their heading:
+Product cards are `<article>` elements named by their heading:
 `getByRole('article', { name: 'Yoga Mat' })`.
+
+| Element             | `data-testid`  | Suggested locator without a test ID             |
+| ------------------- | -------------- | ----------------------------------------------- |
+| New arrivals widget | `new-arrivals` | `getByRole('region', { name: 'New arrivals' })` |
+
+The New arrivals widget appears after a **random** 1–3 second delay. Wait for it with an assertion such as `toBeVisible()`, never with a fixed sleep.
 
 ## Product card (home page and `/products`)
 
@@ -111,3 +117,55 @@ Price slider changes reach the URL 300 ms after the last change. Wait for the UR
 | Flaky input      | —                                    | `getByLabel('Flaky requests (%)')`                                          |
 | Save / Clear     | —                                    | `getByRole('button', { name: 'Save' })`, `{ name: 'Clear chaos settings' }` |
 | Values in effect | `effective-delay`, `effective-flaky` | `getByRole('row', { name: /Delay/ }).getByRole('cell').last()`              |
+
+## Search autocomplete (header, every page)
+
+| Element              | `data-testid`         | Suggested locator without a test ID                                           |
+| -------------------- | --------------------- | ----------------------------------------------------------------------------- |
+| Search box           | `header-search-input` | `getByRole('combobox', { name: 'Search products' })`                          |
+| Suggestions list     | `search-suggestions`  | `getByRole('listbox', { name: 'Product suggestions' })`                       |
+| One suggestion       | —                     | `getByRole('option', { name: /^Ceramic Mug/ })` (the name includes the price) |
+| Highlighted option   | —                     | `getByRole('option', { selected: true })`                                     |
+| Searching / no match | —                     | `getByRole('search').getByRole('status')`                                     |
+
+- Suggestions appear 300 ms after the last keystroke, and only for 2 or more characters.
+- `ArrowDown` and `ArrowUp` move the highlight (wrapping at the ends), and the input's `aria-activedescendant` points at it.
+- `Enter` on a highlighted option opens that product. `Enter` with nothing highlighted goes to `/search?q=…`. `Escape` closes the list.
+- `fill()` types everything at once (one request). `pressSequentially()` with a delay shows the debounce at work.
+
+## Toasts (every page)
+
+| Element         | `data-testid` | Suggested locator without a test ID                                  |
+| --------------- | ------------- | -------------------------------------------------------------------- |
+| Toast container | —             | `getByRole('region', { name: 'Notifications' })`                     |
+| One toast       | `toast`       | `getByRole('region', { name: 'Notifications' }).getByRole('status')` |
+| Dismiss button  | —             | `getByRole('button', { name: 'Dismiss notification' })`              |
+
+Toasts disappear **3 seconds** after they appear. "Add to cart" shows "Added to cart" with "2 × Yoga Mat" underneath. Assert on a toast promptly, or use `toBeHidden()` to wait for it to go.
+
+## Search results (`/search?q=…`)
+
+| Element | `data-testid`    | Suggested locator without a test ID                                    |
+| ------- | ---------------- | ---------------------------------------------------------------------- |
+| Summary | `search-summary` | `getByText(/results? for “/)`                                          |
+| Results | —                | `getByRole('region', { name: 'Search results' }).getByRole('article')` |
+
+## All products, infinite scroll (`/products/all`)
+
+| Element      | `data-testid`   | Suggested locator without a test ID                                     |
+| ------------ | --------------- | ----------------------------------------------------------------------- |
+| Product grid | `infinite-grid` | `getByRole('article')`                                                  |
+| Loading more | —               | `getByRole('status').filter({ hasText: 'Loading more…' })`              |
+| End of list  | —               | `getByText('End of list')`                                              |
+| Load error   | —               | `getByRole('alert')`, then `getByRole('button', { name: 'Try again' })` |
+
+12 products load at first. Scrolling to the bottom (`page.mouse.wheel(0, 10000)`, or `scrollIntoViewIfNeeded()` on the last card) loads 12 more, up to 40. Use `?delay=1000` to make "Loading more…" easy to see.
+
+## Product detail: live stock
+
+| Element      | `data-testid` | Suggested locator without a test ID |
+| ------------ | ------------- | ----------------------------------- |
+| Stock number | `live-stock`  | `getByText(/^Live stock:/)`         |
+| Last refresh | —             | `getByText(/^Updated at /)`         |
+
+The stock refreshes from the API every 5 seconds. If a refresh fails (flaky mode), the last value stays and "Could not refresh stock. Retrying…" is shown.

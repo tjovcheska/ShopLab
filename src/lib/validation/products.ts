@@ -1,7 +1,8 @@
 // Query parameters for the product list. Shared by GET /api/v1/products and
 // the /products page, so the page URL and the API URL use the same names:
 //
-//   ?category=books&category=clothing   one or more category slugs
+//   ?q=mug                              name contains (case-insensitive)
+//   &category=books&category=clothing   one or more category slugs
 //   &minPrice=10&maxPrice=50            whole dollars, inclusive
 //   &inStock=true                       hide out-of-stock products
 //   &sort=price-asc                     see SORT_OPTIONS
@@ -14,6 +15,7 @@ export const SORT_OPTIONS = [
   { value: "price-asc", label: "Price (low to high)" },
   { value: "price-desc", label: "Price (high to low)" },
   { value: "rating-desc", label: "Rating (high to low)" },
+  { value: "newest", label: "Newest" },
 ] as const;
 
 export type SortValue = (typeof SORT_OPTIONS)[number]["value"];
@@ -32,6 +34,7 @@ const wholeDollars = z.coerce
 
 export const productQuerySchema = z
   .object({
+    q: z.string().trim().max(100, "Must be 100 characters or less.").optional(),
     category: z.array(z.string().min(1)).default([]),
     minPrice: wholeDollars.optional(),
     maxPrice: wholeDollars.optional(),
@@ -73,6 +76,7 @@ export function searchParamsToQueryInput(params: URLSearchParams) {
     category: params.getAll("category"),
   };
   for (const key of [
+    "q",
     "minPrice",
     "maxPrice",
     "inStock",

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { connection } from "next/server";
+import { NewArrivals } from "@/components/new-arrivals";
 import { ProductCard } from "@/components/product-card";
 import { db } from "@/lib/db";
 
@@ -37,6 +38,9 @@ export default async function HomePage() {
           Browse all products
         </Link>
       </section>
+
+      {/* Appears after a random 1–3 second delay. */}
+      <NewArrivals />
 
       <section aria-labelledby="categories-heading">
         <h2 id="categories-heading" className="mb-4 text-xl font-semibold">

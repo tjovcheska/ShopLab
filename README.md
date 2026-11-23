@@ -79,3 +79,7 @@ src/
 public/products/      product images
 docs/                 instructor docs (decisions, locators, …)
 ```
+
+## Troubleshooting
+
+- **Pages reload over and over under `npm run dev`.** This happened twice while building ShopLab. The browser kept getting "[Fast Refresh] rebuilding" and reloading the page, which makes tests fail with "waiting for navigation to finish". The cause couldn't be reproduced on demand. Restarting `npm run dev` fixed it both times. The production server (`npm run build && npm start`, as used in Docker and CI) has no hot reload, so it isn't affected.

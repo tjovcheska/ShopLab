@@ -72,6 +72,7 @@ export async function addToCart(
 
   return {
     ok: true,
-    message: `Added ${quantity} × ${product.name} to your cart.`,
+    // Shown as the toast's description under the title "Added to cart".
+    message: `${quantity} × ${product.name}`,
   };
 }

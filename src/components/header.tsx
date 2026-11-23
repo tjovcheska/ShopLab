@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SearchBox } from "@/components/search-box";
 import { getCurrentUser } from "@/lib/auth";
 import { logoutAction } from "@/lib/auth-actions";
 import { db } from "@/lib/db";
@@ -18,30 +19,10 @@ export async function Header() {
           ShopLab
         </Link>
 
-        <form
-          role="search"
-          action="/search"
-          method="get"
-          className="flex min-w-48 flex-1 gap-2"
-        >
-          <label htmlFor="header-search" className="sr-only">
-            Search products
-          </label>
-          <input
-            id="header-search"
-            name="q"
-            type="search"
-            placeholder="Search products…"
-            data-testid="header-search-input"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none"
-          />
-          <button
-            type="submit"
-            className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-          >
-            Search
-          </button>
-        </form>
+        {/* No <Suspense> around it: content inside a Suspense boundary is
+            revealed by a script, so the search form would be invisible
+            with JavaScript disabled. */}
+        <SearchBox />
 
         <nav aria-label="Main">
           <ul className="flex gap-4 text-sm font-medium">
