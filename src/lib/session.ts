@@ -6,6 +6,15 @@ import { createSignedToken, verifySignedToken } from "@/lib/signing";
 export const SESSION_COOKIE = "shoplab_session";
 export const SESSION_MAX_AGE_SECONDS = 7 * 24 * 60 * 60; // 7 days
 
+export const SESSION_COOKIE_OPTIONS = {
+  httpOnly: true,
+  sameSite: "lax" as const,
+  // Not `secure`: ShopLab is served over plain http (localhost, Docker, CI).
+  secure: false,
+  path: "/",
+  maxAge: SESSION_MAX_AGE_SECONDS,
+};
+
 export function createSessionToken(userId: number): string {
   return createSignedToken("session", { uid: userId }, SESSION_MAX_AGE_SECONDS);
 }
@@ -19,14 +28,7 @@ export function verifySessionToken(token: string | undefined): number | null {
 /** Sets the session cookie. Only callable from Server Actions / Route Handlers. */
 export async function setSessionCookie(userId: number) {
   const store = await cookies();
-  store.set(SESSION_COOKIE, createSessionToken(userId), {
-    httpOnly: true,
-    sameSite: "lax",
-    // Not `secure`: ShopLab is served over plain http (localhost, Docker, CI).
-    secure: false,
-    path: "/",
-    maxAge: SESSION_MAX_AGE_SECONDS,
-  });
+  store.set(SESSION_COOKIE, createSessionToken(userId), SESSION_COOKIE_OPTIONS);
 }
 
 export async function clearSessionCookie() {

@@ -1,10 +1,10 @@
 // Generates simple placeholder SVG images into public/products/.
 // The output is committed, so this only needs to run again when products
-// are added or renamed in prisma/seed-data.ts:
+// are added or renamed in src/lib/seed/data.ts:
 //   npx tsx scripts/generate-product-images.ts
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { categories, products } from "../prisma/seed-data";
+import { categories, products } from "../src/lib/seed/data";
 
 const outDir = join(process.cwd(), "public", "products");
 mkdirSync(outDir, { recursive: true });

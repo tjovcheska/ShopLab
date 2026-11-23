@@ -76,6 +76,23 @@ curl -s localhost:3000/api/v1/cart -H "Authorization: Bearer $TOKEN"
 
 Every protected endpoint also accepts the website's `shoplab_session` cookie.
 
+## Test support endpoints
+
+Only available when `TEST_HOOKS_ENABLED=true` (otherwise every `/api/test/*` path returns a 404). They ignore chaos settings.
+
+| Endpoint                  | What it does                                                                                        |
+| ------------------------- | --------------------------------------------------------------------------------------------------- |
+| `GET /api/test/health`    | `{ "status": "ok" }` when the app and database are ready                                            |
+| `POST /api/test/reset`    | Restores the seed data (same ids and passwords), usually in a few ms                                |
+| `POST /api/test/users`    | Creates a user (`email`, `password`, `name`, `role`, all optional), returns credentials and a token |
+| `POST /api/test/products` | Creates one product or an array of products (all fields optional)                                   |
+| `POST /api/test/login-as` | `{ "email" }`: sets the session cookie without a password                                           |
+
+```bash
+TEST_HOOKS_ENABLED=true npm run dev
+curl -X POST localhost:3000/api/test/reset
+```
+
 ## Environment variables
 
 All variables are documented in [.env.example](.env.example).
@@ -93,7 +110,7 @@ All variables are documented in [.env.example](.env.example).
 ```
 prisma/
   schema.prisma       data model
-  seed.ts             seed script (data lives in seed-data.ts)
+  seed.ts             seed script (data and logic: src/lib/seed/)
   migrations/         SQL migrations
 prisma.config.ts      Prisma CLI config (database URL, seed command)
 src/
@@ -107,4 +124,4 @@ docs/                 instructor docs (decisions, locators, …)
 
 ## Troubleshooting
 
-- **Pages reload over and over under `npm run dev`.** This happened twice while building ShopLab. The browser kept getting "[Fast Refresh] rebuilding" and reloading the page, which makes tests fail with "waiting for navigation to finish". The cause couldn't be reproduced on demand. Restarting `npm run dev` fixed it both times. The production server (`npm run build && npm start`, as used in Docker and CI) has no hot reload, so it isn't affected.
+- **Pages reload over and over under `npm run dev`.** This happened three times while building ShopLab. The browser kept getting "[Fast Refresh] rebuilding" and reloading pages, so browser tests failed with "waiting for navigation to finish" while plain HTTP calls kept working. Each time it stopped by itself or after restarting `npm run dev`. The cause wasn't found: it wasn't reproducible on demand, and writing to `dev.db`, editing files, or building first didn't trigger it. It has **never** happened with the production server (`npm run build && npm start`), which has no hot reload. Use that for long or important test runs.

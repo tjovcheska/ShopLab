@@ -17,6 +17,7 @@ export async function createUser(input: {
   name: string;
   email: string;
   password: string;
+  role?: "customer" | "admin";
 }): Promise<PublicUser> {
   const existing = await db.user.findUnique({ where: { email: input.email } });
   if (existing) {
@@ -31,7 +32,7 @@ export async function createUser(input: {
       name: input.name,
       email: input.email,
       passwordHash: await bcrypt.hash(input.password, 10),
-      role: "customer",
+      role: input.role ?? "customer",
     },
     select: publicFields,
   });

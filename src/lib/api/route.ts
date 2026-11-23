@@ -1,4 +1,4 @@
-// Building blocks shared by every /api/v1 route handler.
+// Building blocks shared by every /api/v1 and /api/test route handler.
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { apiError } from "@/lib/api-errors";
@@ -7,16 +7,19 @@ import { db } from "@/lib/db";
 import { ShopError, validationFailure } from "@/lib/errors";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/session";
 
+type Handler<Context> = (
+  request: NextRequest,
+  context: Context,
+) => Promise<Response>;
+
 /**
- * Wraps a route handler:
- *   - chaos delay / flaky mode (withChaos)
- *   - a thrown ShopError becomes its JSON error response
- *   - anything else becomes 500 INTERNAL_ERROR (and is logged)
+ * A thrown ShopError becomes its JSON error response; anything else becomes
+ * 500 INTERNAL_ERROR (and is logged).
  */
-export function apiRoute<Context = unknown>(
-  handler: (request: NextRequest, context: Context) => Promise<Response>,
-) {
-  return withChaos(async (request: NextRequest, context: Context) => {
+export function handleErrors<Context>(
+  handler: Handler<Context>,
+): Handler<Context> {
+  return async (request, context) => {
     try {
       return await handler(request, context);
     } catch (error) {
@@ -26,7 +29,26 @@ export function apiRoute<Context = unknown>(
       console.error(error);
       return apiError(500, "INTERNAL_ERROR", "Something went wrong.");
     }
-  });
+  };
+}
+
+/** For /api/v1 routes: chaos delay / flaky mode + JSON errors. */
+export function apiRoute<Context = unknown>(handler: Handler<Context>) {
+  return withChaos(handleErrors(handler));
+}
+
+/**
+ * For /api/test routes: a JSON 404 unless TEST_HOOKS_ENABLED=true, and no
+ * chaos (health checks and resets must not fail randomly or slow down).
+ */
+export function testRoute<Context = unknown>(handler: Handler<Context>) {
+  const inner = handleErrors(handler);
+  return async (request: NextRequest, context: Context) => {
+    if (process.env.TEST_HOOKS_ENABLED !== "true") {
+      return apiError(404, "NOT_FOUND", "Not found.");
+    }
+    return inner(request, context);
+  };
 }
 
 export const json = (body: unknown, status = 200) =>
@@ -48,6 +70,29 @@ export async function readJson<Schema extends z.ZodType>(
       "INVALID_JSON",
       "The request body must be valid JSON.",
     );
+  }
+  const parsed = schema.safeParse(body);
+  if (!parsed.success) throw validationFailure(parsed.error);
+  return parsed.data;
+}
+
+/** Like readJson, but an empty body counts as {} (for optional bodies). */
+export async function readOptionalJson<Schema extends z.ZodType>(
+  request: NextRequest,
+  schema: Schema,
+): Promise<z.output<Schema>> {
+  const text = await request.text();
+  let body: unknown = {};
+  if (text.trim() !== "") {
+    try {
+      body = JSON.parse(text);
+    } catch {
+      throw new ShopError(
+        400,
+        "INVALID_JSON",
+        "The request body must be valid JSON.",
+      );
+    }
   }
   const parsed = schema.safeParse(body);
   if (!parsed.success) throw validationFailure(parsed.error);
