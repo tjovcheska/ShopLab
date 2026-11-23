@@ -2,12 +2,22 @@
 
 ShopLab is a small e-commerce web app built **as a target for teaching Playwright test automation**. It is not a real shop. Its features exist so students can practice page objects, locators, waits, complex UI, frames, flaky behavior, test data, API testing, and CI.
 
-See [PLAN.md](PLAN.md) for the full feature plan and [docs/DECISIONS.md](docs/DECISIONS.md) for implementation choices.
+## Documentation
+
+| Document                                 | For                                                                             |
+| ---------------------------------------- | ------------------------------------------------------------------------------- |
+| [docs/COURSE-MAP.md](docs/COURSE-MAP.md) | Which pages and endpoints support each course module, plus a list of every page |
+| [docs/LOCATORS.md](docs/LOCATORS.md)     | Which pages have `data-testid`s, locators for every element, common gotchas     |
+| [docs/CHAOS.md](docs/CHAOS.md)           | Delay and flaky modes, and suggested exercises                                  |
+| [docs/DECISIONS.md](docs/DECISIONS.md)   | Why things are built the way they are (useful when a test behaves oddly)        |
+| [PLAN.md](PLAN.md)                       | The original build plan                                                         |
+| `/api-docs` (in the running app)         | REST API reference                                                              |
 
 ## Requirements
 
 - Node.js 22 or newer (current LTS)
 - npm
+- Optional: a Docker runtime for the two-environment setup (see [Docker](#docker-two-environments))
 
 ## Setup
 
@@ -23,19 +33,24 @@ A `.env` file is optional. Without one, the app uses `file:./dev.db`. To change 
 cp .env.example .env
 ```
 
+For test automation you'll usually want the test hooks on (`TEST_HOOKS_ENABLED=true`, see [Test support endpoints](#test-support-endpoints)). For long test runs, prefer the production server (`npm run build && npm start`) over `npm run dev`; see [Troubleshooting](#troubleshooting).
+
 ## Scripts
 
-| Script               | What it does                                                                              |
-| -------------------- | ----------------------------------------------------------------------------------------- |
-| `npm run dev`        | Start the development server                                                              |
-| `npm run build`      | Production build                                                                          |
-| `npm start`          | Serve the production build                                                                |
-| `npm run lint`       | ESLint                                                                                    |
-| `npm run typecheck`  | Generate Next.js route types and run `tsc`                                                |
-| `npm run format`     | Format all files with Prettier (`format:check` only checks)                               |
-| `npm run db:migrate` | Create/apply a migration after editing `prisma/schema.prisma`, then regenerate the client |
-| `npm run db:seed`    | Wipe all tables and insert the seed data again                                            |
-| `npm run db:reset`   | Drop the database, re-apply all migrations, regenerate, and seed                          |
+| Script                 | What it does                                                                              |
+| ---------------------- | ----------------------------------------------------------------------------------------- |
+| `npm run dev`          | Start the development server (http://localhost:3000)                                      |
+| `npm run build`        | Production build                                                                          |
+| `npm start`            | Serve the production build                                                                |
+| `npm run lint`         | ESLint                                                                                    |
+| `npm run typecheck`    | Generate Next.js route types and run `tsc`                                                |
+| `npm run format`       | Format all files with Prettier                                                            |
+| `npm run format:check` | Check formatting without changing files                                                   |
+| `npm run db:migrate`   | Create/apply a migration after editing `prisma/schema.prisma`, then regenerate the client |
+| `npm run db:seed`      | Wipe all tables and insert the seed data again                                            |
+| `npm run db:reset`     | Drop the database, re-apply all migrations, regenerate, and seed                          |
+| `npm run test:smoke`   | Instructor smoke test against both Docker environments (see below)                        |
+| `postinstall`          | Runs automatically after `npm install`: generates the Prisma client                       |
 
 The seed is deterministic: every run produces the same ids, dates, and data.
 
@@ -124,13 +139,13 @@ curl -X POST localhost:3000/api/test/reset
 
 All variables are documented in [.env.example](.env.example).
 
-| Variable              | Default         | Purpose                                      |
-| --------------------- | --------------- | -------------------------------------------- |
-| `DATABASE_URL`        | `file:./dev.db` | SQLite database file                         |
-| `SESSION_SECRET`      | —               | Signs the session cookie                     |
-| `CHAOS_DELAY_MS`      | `0`             | Default artificial API delay (max 15000)     |
-| `CHAOS_FLAKY_PERCENT` | `0`             | Default % of API requests that fail with 500 |
-| `TEST_HOOKS_ENABLED`  | `false`         | Enables the `/api/test/*` endpoints          |
+| Variable              | Default                    | Purpose                                                                   |
+| --------------------- | -------------------------- | ------------------------------------------------------------------------- |
+| `DATABASE_URL`        | `file:./dev.db`            | SQLite database file                                                      |
+| `SESSION_SECRET`      | a fixed development secret | Signs session and payment tokens. Set a long random value anywhere shared |
+| `CHAOS_DELAY_MS`      | `0`                        | Default artificial API delay (max 15000)                                  |
+| `CHAOS_FLAKY_PERCENT` | `0`                        | Default % of API requests that fail with 500                              |
+| `TEST_HOOKS_ENABLED`  | `false`                    | Enables the `/api/test/*` endpoints                                       |
 
 ## Project layout
 
