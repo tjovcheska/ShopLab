@@ -19,7 +19,8 @@ db.$transaction((tx) => seedDatabase(tx), { timeout: 30_000 })
     console.log(
       `Seeded ${counts.categories} categories, ${counts.products} products ` +
         `(${counts.outOfStock} out of stock), ${counts.users} users, ` +
-        `${counts.reviews} reviews, ${counts.orders} orders.`,
+        `${counts.reviews} reviews, ${counts.orders} orders, ` +
+        `${counts.wishlistItems} wishlist items.`,
     );
   })
   .catch((error) => {

@@ -140,3 +140,35 @@ export async function getVisibleOrder(
     return null;
   return order;
 }
+
+/**
+ * Cancels a paid order that has not shipped yet and puts its items back in
+ * stock. Only the customer who placed it can cancel it.
+ */
+export async function cancelOrder(orderId: number, userId: number) {
+  const order = await db.order.findUnique({
+    where: { id: orderId },
+    include: { items: true },
+  });
+  if (!order || order.userId !== userId) {
+    throw new ShopError(404, "NOT_FOUND", `Order ${orderId} not found.`);
+  }
+  if (order.status !== "paid") {
+    throw new ShopError(
+      409,
+      "CANNOT_CANCEL",
+      order.status === "cancelled"
+        ? "This order is already cancelled."
+        : "Only paid orders that have not shipped can be cancelled.",
+    );
+  }
+  await db.$transaction([
+    db.order.update({ where: { id: orderId }, data: { status: "cancelled" } }),
+    ...order.items.map((item) =>
+      db.product.update({
+        where: { id: item.productId },
+        data: { stock: { increment: item.quantity } },
+      }),
+    ),
+  ]);
+}

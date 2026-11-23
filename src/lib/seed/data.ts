@@ -513,6 +513,18 @@ const aliceAddress = {
   country: "US",
 };
 
+const bobAddress = {
+  fullName: "Bob Brown",
+  line1: "48 Sample Road",
+  city: "Toronto",
+  region: "ON",
+  postalCode: "M5V 2T6",
+  country: "CA",
+};
+
+// Alice has a shipped and a paid order; Bob has two paid orders. On the admin
+// order board that gives cards in both columns, and two cards with the same
+// customer name.
 export const pastOrders = [
   {
     user: "alice@shoplab.test",
@@ -537,6 +549,40 @@ export const pastOrders = [
       { product: "learning-typescript", quantity: 1 },
       { product: "yoga-mat", quantity: 1 },
       { product: "classic-t-shirt", quantity: 3 },
+    ],
+  },
+  {
+    user: "bob@shoplab.test",
+    status: "paid" as const,
+    deliveryMethod: "standard",
+    createdAt: "2026-11-10T09:15:00.000Z",
+    deliveryDate: "2026-11-17T00:00:00.000Z",
+    shippingAddress: bobAddress,
+    items: [
+      { product: "hoodie", quantity: 1 },
+      { product: "water-bottle", quantity: 2 },
+    ],
+  },
+  {
+    user: "bob@shoplab.test",
+    status: "paid" as const,
+    deliveryMethod: "express",
+    createdAt: "2026-11-18T14:40:00.000Z",
+    deliveryDate: "2026-11-24T00:00:00.000Z",
+    shippingAddress: bobAddress,
+    items: [{ product: "camping-tent", quantity: 1 }],
+  },
+];
+
+// Alice's wishlist, in her chosen order (reorderable by drag and drop).
+export const wishlists = [
+  {
+    user: "alice@shoplab.test",
+    products: [
+      "hiking-backpack",
+      "smart-watch",
+      "coffee-grinder",
+      "rain-jacket",
     ],
   },
 ];

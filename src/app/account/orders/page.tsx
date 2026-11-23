@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CancelOrderButton } from "@/components/cancel-order-button";
 import { StatusBadge } from "@/components/status-badge";
 import { requireUser } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -51,6 +52,9 @@ export default async function OrderHistoryPage() {
               <th scope="col" className="p-3">
                 Status
               </th>
+              <th scope="col" className="p-3">
+                <span className="sr-only">Actions</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -73,6 +77,14 @@ export default async function OrderHistoryPage() {
                 </td>
                 <td className="p-3">
                   <StatusBadge status={order.status} />
+                </td>
+                <td className="p-3">
+                  {order.status === "paid" && (
+                    <CancelOrderButton
+                      orderId={order.id}
+                      orderNumber={formatOrderNumber(order.id)}
+                    />
+                  )}
                 </td>
               </tr>
             ))}

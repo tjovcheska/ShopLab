@@ -22,15 +22,18 @@ enum OrderStatus {
 }
 
 model User {
-  id           Int        @id @default(autoincrement())
-  email        String     @unique
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
   passwordHash String
   name         String
-  role         Role       @default(customer)
-  createdAt    DateTime   @default(now())
+  role         Role           @default(customer)
+  createdAt    DateTime       @default(now())
+  avatar       Bytes? // profile picture (uploaded on /account)
+  avatarType   String? // its MIME type, e.g. "image/png"
   cartItems    CartItem[]
   orders       Order[]
   reviews      Review[]
+  wishlist     WishlistItem[]
 }
 
 model Category {
@@ -41,20 +44,21 @@ model Category {
 }
 
 model Product {
-  id          Int         @id @default(autoincrement())
-  name        String
-  slug        String      @unique
-  description String
-  priceCents  Int
-  stock       Int
-  imageUrl    String
-  categoryId  Int
-  category    Category    @relation(fields: [categoryId], references: [id])
-  rating      Int // 1–5
-  createdAt   DateTime    @default(now())
-  cartItems   CartItem[]
-  orderItems  OrderItem[]
-  reviews     Review[]
+  id            Int            @id @default(autoincrement())
+  name          String
+  slug          String         @unique
+  description   String
+  priceCents    Int
+  stock         Int
+  imageUrl      String
+  categoryId    Int
+  category      Category       @relation(fields: [categoryId], references: [id])
+  rating        Int // 1–5
+  createdAt     DateTime       @default(now())
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+  reviews       Review[]
+  wishlistItems WishlistItem[]
 }
 
 model CartItem {
@@ -93,12 +97,36 @@ model OrderItem {
 }
 
 model Review {
-  id        Int      @id @default(autoincrement())
+  id        Int           @id @default(autoincrement())
   productId Int
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product   Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
   userId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   rating    Int // 1–5
   comment   String
+  createdAt DateTime      @default(now())
+  photos    ReviewPhoto[]
+}
+
+// Files attached to a review. Only the name, size, and type are kept.
+model ReviewPhoto {
+  id        Int    @id @default(autoincrement())
+  reviewId  Int
+  review    Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  fileName  String
+  sizeBytes Int
+  mimeType  String
+}
+
+// A user's wishlist, in the order they arranged it (drag and drop).
+model WishlistItem {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  position  Int
   createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
 }

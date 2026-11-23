@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AddToCart } from "@/components/add-to-cart";
+import { QuickView } from "@/components/quick-view";
 import { Rating } from "@/components/rating";
 import { formatPrice } from "@/lib/format";
 
@@ -17,13 +18,14 @@ export type ProductCardData = {
 // Each card is an <article> named by its heading, so tests can target one
 // card with getByRole("article", { name: "Yoga Mat" }). The "Add to cart"
 // buttons all share the same name and have no test ID: filter by card first.
+// "Quick view" only becomes visible while the card is hovered.
 export function ProductCard({ product }: { product: ProductCardData }) {
   const headingId = `product-${product.slug}-name`;
   const outOfStock = product.stock === 0;
   return (
     <article
       aria-labelledby={headingId}
-      className="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
+      className="group/card flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
     >
       <div className="relative">
         <Image
@@ -38,6 +40,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
             Out of stock
           </span>
         )}
+        <QuickView productId={product.id} name={product.name} />
       </div>
       <div className="flex flex-1 flex-col gap-1 p-4">
         <h3 id={headingId} className="font-semibold">

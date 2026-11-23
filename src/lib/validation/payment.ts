@@ -6,6 +6,8 @@ import { z } from "zod";
 export const TEST_CARDS = {
   approved: "4242424242424242",
   declined: "4000000000000002",
+  /** Asks for bank verification (3-D Secure) in a nested iframe. */
+  threeDSecure: "4000002760003184",
 };
 
 export const cardSchema = z.object({
@@ -45,3 +47,15 @@ export type PaymentMessage =
       amountCents: number;
     }
   | { type: "shoplab-payment"; status: "declined"; message: string };
+
+/** Message sent from the nested bank-verification iframe to the payment iframe. */
+export type ThreeDSMessage =
+  | {
+      type: "shoplab-3ds";
+      status: "approved";
+      token: string;
+      last4: string;
+      brand: string;
+      amountCents: number;
+    }
+  | { type: "shoplab-3ds"; status: "cancelled" };

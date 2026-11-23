@@ -17,7 +17,8 @@ export default async function PaymentPage({
       <h1 className="mb-1 text-lg font-semibold">Card payment</h1>
       <p className="mb-4 text-xs text-gray-500">
         Test cards: 4242 4242 4242 4242 (approved), 4000 0000 0000 0002
-        (declined). Any future expiry date and any 3-digit CVC.
+        (declined), 4000 0027 6000 3184 (bank verification, code 123456). Any
+        future expiry date and any 3-digit CVC.
       </p>
       {valid ? (
         <PaymentForm amountCents={amountCents} />

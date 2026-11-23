@@ -1,6 +1,12 @@
 "use client";
 
-import { useState, useTransition, type FormEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+  type FormEvent,
+} from "react";
 import { FormField } from "@/components/form-field";
 import { formatPrice } from "@/lib/format";
 import { toFieldErrors } from "@/lib/validation/checkout";
@@ -9,6 +15,7 @@ import {
   type CardField,
   type CardInput,
   type PaymentMessage,
+  type ThreeDSMessage,
 } from "@/lib/validation/payment";
 import { authorizePayment } from "./actions";
 
@@ -37,7 +44,42 @@ export function PaymentForm({ amountCents }: { amountCents: number }) {
   const [errors, setErrors] = useState<FieldErrors>({});
   const [declined, setDeclined] = useState<string | null>(null);
   const [approved, setApproved] = useState<string | null>(null);
+  // 3-D Secure: a signed challenge while the nested bank iframe is open.
+  const [challenge, setChallenge] = useState<string | null>(null);
+  const bankFrameRef = useRef<HTMLIFrameElement>(null);
   const [pending, startTransition] = useTransition();
+
+  // Listen for the nested "Bank verification" iframe's answer.
+  useEffect(() => {
+    if (!challenge) return;
+    function onMessage(event: MessageEvent) {
+      if (event.origin !== window.location.origin) return;
+      if (event.source !== bankFrameRef.current?.contentWindow) return;
+      const message = event.data as ThreeDSMessage;
+      if (message?.type !== "shoplab-3ds") return;
+      if (message.status === "approved") {
+        setApproved(`${message.brand} ending in ${message.last4}`);
+        notifyParent({
+          type: "shoplab-payment",
+          status: "approved",
+          token: message.token,
+          last4: message.last4,
+          brand: message.brand,
+          amountCents: message.amountCents,
+        });
+      } else {
+        setChallenge(null);
+        setDeclined("Bank verification was cancelled.");
+        notifyParent({
+          type: "shoplab-payment",
+          status: "declined",
+          message: "Bank verification was cancelled.",
+        });
+      }
+    }
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [challenge]);
 
   function update(field: CardField, value: string) {
     setCard((c) => ({ ...c, [field]: value }));
@@ -70,6 +112,9 @@ export function PaymentForm({ amountCents }: { amountCents: number }) {
             message: result.message,
           });
           break;
+        case "challenge":
+          setChallenge(result.challenge);
+          break;
         case "approved":
           setApproved(`${result.brand} ending in ${result.last4}`);
           notifyParent({
@@ -83,6 +128,23 @@ export function PaymentForm({ amountCents }: { amountCents: number }) {
           break;
       }
     });
+  }
+
+  if (challenge && !approved) {
+    return (
+      <div className="flex flex-col gap-2">
+        <p role="status" className="text-sm text-gray-700">
+          Your bank needs to verify this payment.
+        </p>
+        <iframe
+          ref={bankFrameRef}
+          title="Bank verification"
+          name="bank-verification"
+          src={`/embed/3ds?challenge=${encodeURIComponent(challenge)}`}
+          className="h-60 w-full rounded-md border-2 border-sky-300"
+        />
+      </div>
+    );
   }
 
   if (approved) {

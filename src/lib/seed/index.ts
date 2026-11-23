@@ -6,7 +6,14 @@
 import bcrypt from "bcryptjs";
 import type { Prisma } from "../../generated/prisma/client";
 import { DELIVERY_OPTIONS } from "../checkout-options";
-import { categories, pastOrders, products, reviews, users } from "./data";
+import {
+  categories,
+  pastOrders,
+  products,
+  reviews,
+  users,
+  wishlists,
+} from "./data";
 
 // A fixed salt keeps password hashes identical between runs. Fine for a
 // teaching app with public demo passwords; never do this in a real system.
@@ -32,6 +39,8 @@ type Tx = Prisma.TransactionClient;
 
 async function wipe(tx: Tx) {
   // Delete children before parents to respect foreign keys.
+  await tx.wishlistItem.deleteMany();
+  await tx.reviewPhoto.deleteMany();
   await tx.orderItem.deleteMany();
   await tx.order.deleteMany();
   await tx.review.deleteMany();
@@ -50,6 +59,7 @@ export type SeedCounts = {
   users: number;
   reviews: number;
   orders: number;
+  wishlistItems: number;
 };
 
 /**
@@ -142,6 +152,19 @@ export async function seedDatabase(tx: Tx): Promise<SeedCounts> {
     });
   }
 
+  for (const w of wishlists) {
+    for (const [position, slug] of w.products.entries()) {
+      await tx.wishlistItem.create({
+        data: {
+          userId: userIds.get(w.user)!,
+          productId: productIds.get(slug)!.id,
+          position,
+          createdAt: new Date("2026-11-15T12:00:00.000Z"),
+        },
+      });
+    }
+  }
+
   return {
     categories: categories.length,
     products: products.length,
@@ -149,5 +172,6 @@ export async function seedDatabase(tx: Tx): Promise<SeedCounts> {
     users: users.length,
     reviews: reviews.length,
     orders: pastOrders.length,
+    wishlistItems: wishlists.reduce((n, w) => n + w.products.length, 0),
   };
 }

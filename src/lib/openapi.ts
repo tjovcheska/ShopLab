@@ -364,7 +364,7 @@ export const openApiDocument = {
       }),
       post: op("user", "Orders", "Order everything in your cart", {
         description:
-          "Pays with the card in the request (test cards: 4242 4242 4242 4242 is approved, 4000 0000 0000 0002 is declined). " +
+          "Pays with the card in the request (test cards: 4242 4242 4242 4242 is approved, 4000 0000 0000 0002 is declined; the 3-D Secure card 4000 0027 6000 3184 is also declined here because bank verification only exists on the website). " +
           "delivery is optional: standard delivery on the earliest date (a weekday at least 2 days from today). " +
           "On success the cart is emptied and stock goes down.",
         requestBody: jsonBody(ref("OrderCreate"), {

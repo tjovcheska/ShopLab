@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getCurrentUser, requireAdmin } from "@/lib/auth";
 import { db } from "@/lib/db";
 
@@ -43,6 +44,32 @@ export default async function AdminPage() {
           </div>
         ))}
       </dl>
+      <nav aria-label="Admin" className="mt-8">
+        <ul className="flex flex-wrap gap-4">
+          <li>
+            <Link
+              href="/admin/orders"
+              className="block rounded-lg border border-gray-200 bg-white p-4 hover:border-indigo-400"
+            >
+              <span className="block font-semibold">Order board</span>
+              <span className="text-sm text-gray-600">
+                Drag orders from Paid to Shipped
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/admin/products"
+              className="block rounded-lg border border-gray-200 bg-white p-4 hover:border-indigo-400"
+            >
+              <span className="block font-semibold">Manage products</span>
+              <span className="text-sm text-gray-600">
+                Sort, filter, bulk-edit, export CSV
+              </span>
+            </Link>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 }

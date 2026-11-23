@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { ShopError } from "@/lib/errors";
 import { checkPaymentToken, markPaymentUsed } from "@/lib/payment";
-import { createOrderFromCart } from "@/lib/services/orders";
+import { cancelOrder, createOrderFromCart } from "@/lib/services/orders";
 import type { DeliveryInput, ShippingInput } from "@/lib/validation/checkout";
 
 /** Only returned on failure; on success the action redirects. */
@@ -68,4 +68,24 @@ export async function placeOrder(input: {
   // the header again, so the cart count drops to 0 straight away.
   revalidatePath("/", "layout");
   redirect(`/orders/${orderId}?placed=1`);
+}
+
+export type CancelOrderResult = { ok: boolean; message: string };
+
+/** "Cancel order" on the order page and in the order history. */
+export async function cancelOrderAction(
+  orderId: number,
+): Promise<CancelOrderResult> {
+  const user = await getCurrentUser();
+  if (!user) return { ok: false, message: "Please log in again." };
+  try {
+    await cancelOrder(orderId, user.id);
+  } catch (error) {
+    if (error instanceof ShopError)
+      return { ok: false, message: error.message };
+    throw error;
+  }
+  revalidatePath("/account/orders");
+  revalidatePath(`/orders/${orderId}`);
+  return { ok: true, message: "Your order has been cancelled." };
 }

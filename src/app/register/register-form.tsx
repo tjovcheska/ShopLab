@@ -29,26 +29,24 @@ export function RegisterForm({ next }: { next: string | null }) {
     password: "",
     confirmPassword: "",
   });
-  // Errors found in the browser; null until the first submit attempt.
-  const [clientErrors, setClientErrors] =
-    useState<FieldErrors<RegisterField> | null>(null);
+  // After a failed submit in the browser, errors are re-checked live as the
+  // user types; once the server answers, its errors are shown instead.
+  const [liveValidation, setLiveValidation] = useState(false);
   const [lastServerState, setLastServerState] = useState(state);
-
-  // When the server answers, show its errors instead of the browser's.
   if (state !== lastServerState) {
     setLastServerState(state);
-    setClientErrors(null);
+    setLiveValidation(false);
   }
-  const errors = clientErrors ?? state.fieldErrors;
+  let errors: FieldErrors<RegisterField> = state.fieldErrors;
+  if (liveValidation) {
+    const result = validateRegister(values);
+    errors = result.success ? {} : result.fieldErrors;
+  }
 
+  // Functional update: several fields may be set in a row (e.g. text typed
+  // before hydration is adopted field by field).
   function update(field: RegisterField, value: string) {
-    const nextValues = { ...values, [field]: value };
-    setValues(nextValues);
-    // After a failed submit, re-check as the user types so errors clear.
-    if (clientErrors) {
-      const result = validateRegister(nextValues);
-      setClientErrors(result.success ? {} : result.fieldErrors);
-    }
+    setValues((previous) => ({ ...previous, [field]: value }));
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -59,7 +57,7 @@ export function RegisterForm({ next }: { next: string | null }) {
     const result = validateRegister(values);
     if (!result.success) {
       // Invalid: show errors in the browser; the server action never runs.
-      setClientErrors(result.fieldErrors);
+      setLiveValidation(true);
       return;
     }
     const formData = new FormData(event.currentTarget);

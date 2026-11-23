@@ -9,6 +9,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import { apiFetch } from "@/lib/api-client";
+import { useAdoptDomValue } from "@/lib/use-adopt-dom-value";
 import { formatPrice } from "@/lib/format";
 import type {
   ProductListItem,
@@ -40,6 +41,7 @@ function Combobox({ initialQuery }: { initialQuery: string }) {
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const request = useRef<AbortController | null>(null);
 
   useEffect(
@@ -153,6 +155,9 @@ function Combobox({ initialQuery }: { initialQuery: string }) {
 
   const optionId = (item: ProductListItem) => `search-option-${item.id}`;
 
+  // Keep text typed before hydration (and fetch its suggestions).
+  useAdoptDomValue(inputRef, query, handleChange);
+
   return (
     <form
       role="search"
@@ -165,6 +170,7 @@ function Combobox({ initialQuery }: { initialQuery: string }) {
         Search products
       </label>
       <input
+        ref={inputRef}
         id="header-search"
         name="q"
         type="search"

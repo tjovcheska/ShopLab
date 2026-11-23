@@ -20,7 +20,7 @@ Chaos mode makes ShopLab's **API** slow or unreliable on purpose, so students ca
 
 ### What chaos affects
 
-Only responses from `/api/v1/*` and `/api/playground/download` are delayed or failed. A page's `?delay` reaches its API calls because the browser-side `apiFetch()` (`src/lib/api-client.ts`) copies it onto every `/api/...` request.
+Only responses from `/api/v1/*` and the admin CSV export (`/admin/products/export`) are delayed or failed. A page's `?delay` reaches its API calls because the browser-side `apiFetch()` (`src/lib/api-client.ts`) copies it onto every `/api/...` request.
 
 | Affected (fetches from the API in the browser)                          | Not affected                                                                       |
 | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
@@ -29,7 +29,8 @@ Only responses from `/api/v1/*` and `/api/playground/download` are delayed or fa
 | Header search suggestions ("Searching…", "Could not load suggestions.") | The payment iframe's card authorization (Server Action)                            |
 | Home page "New arrivals" (never appears if its request fails)           | `/api/test/*` test hooks, including health and reset                               |
 | Product page "Live stock" ("Could not refresh stock. Retrying…")        |                                                                                    |
-| The CSV download on `/playground/upload`                                |                                                                                    |
+| The Quick view dialog on product cards                                  |                                                                                    |
+| The "Export CSV" download on `/admin/products`                          |
 | Every REST API call students make with `request`                        |                                                                                    |
 
 ## Setting chaos from a test

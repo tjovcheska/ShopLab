@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 /**
  * Wraps every page in the banner, header, and footer, except:
- *   /embed/*  pages shown inside iframes (payment form, frames playground)
+ *   /embed/*  pages shown inside iframes (payment form, bank verification)
  *   /popup/*  pages opened in small popup windows (share)
  * Those must not contain a second copy of the site around them.
  */

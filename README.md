@@ -58,22 +58,23 @@ The seed is deterministic: every run produces the same ids, dates, and data.
 
 ## Seeded accounts
 
-| Email                | Password       | Role                         |
-| -------------------- | -------------- | ---------------------------- |
-| `alice@shoplab.test` | `Password123!` | customer (has 2 past orders) |
-| `bob@shoplab.test`   | `Password123!` | customer                     |
-| `admin@shoplab.test` | `Admin123!`    | admin                        |
+| Email                | Password       | Role                                        |
+| -------------------- | -------------- | ------------------------------------------- |
+| `alice@shoplab.test` | `Password123!` | customer (2 past orders, a 4-item wishlist) |
+| `bob@shoplab.test`   | `Password123!` | customer (2 paid orders)                    |
+| `admin@shoplab.test` | `Admin123!`    | admin                                       |
 
-The seed also contains 5 categories, 40 products (5 of them out of stock), and 12 reviews.
+The seed also contains 5 categories, 40 products (5 of them out of stock), and 12 reviews. On the admin order board that gives 3 paid orders and 1 shipped.
 
 ## Test payment cards
 
 Checkout payments happen inside an iframe (`/embed/payment`):
 
-| Card number           | Result                         |
-| --------------------- | ------------------------------ |
-| `4242 4242 4242 4242` | Approved                       |
-| `4000 0000 0000 0002` | Declined (error inside iframe) |
+| Card number           | Result                                                                      |
+| --------------------- | --------------------------------------------------------------------------- |
+| `4242 4242 4242 4242` | Approved                                                                    |
+| `4000 0000 0000 0002` | Declined (error inside iframe)                                              |
+| `4000 0027 6000 3184` | 3-D Secure: a nested "Bank verification" iframe opens; the code is `123456` |
 
 Use any future expiry date (MM/YY) and any 3-digit CVC.
 

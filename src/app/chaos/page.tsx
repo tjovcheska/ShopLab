@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { getChaosSettings, getCookieChaos, getEnvChaos } from "@/lib/chaos";
+import { cookies } from "next/headers";
 import { MAX_DELAY_MS } from "@/lib/chaos-config";
+import { OVERLAY_COOKIE } from "@/lib/cookie-consent";
 import { clearChaosSettings, saveChaosSettings } from "./actions";
 
 export const metadata: Metadata = { title: "Chaos settings" };
@@ -9,6 +11,7 @@ export default async function ChaosPage({ searchParams }: PageProps<"/chaos">) {
   const { saved, cleared } = await searchParams;
   const env = getEnvChaos();
   const fromCookies = await getCookieChaos();
+  const overlayOn = (await cookies()).get(OVERLAY_COOKIE)?.value === "on";
   const effective = await getChaosSettings();
 
   const show = (value: number | null, unit: string) =>
@@ -118,6 +121,22 @@ export default async function ChaosPage({ searchParams }: PageProps<"/chaos">) {
           <p id="chaos-flaky-hint" className="text-xs text-gray-500">
             Percentage of API requests that fail with HTTP 500. Leave empty to
             use the env default.
+          </p>
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="flex items-center gap-2 text-sm font-medium">
+            <input
+              type="checkbox"
+              name="cookieOverlay"
+              defaultChecked={overlayOn}
+              aria-describedby="chaos-overlay-hint"
+            />
+            Show cookie consent overlay
+          </label>
+          <p id="chaos-overlay-hint" className="text-xs text-gray-500">
+            Covers every page until the visitor accepts or rejects cookies, so
+            clicks on the page fail with &ldquo;intercepts pointer
+            events&rdquo;.
           </p>
         </div>
         <div className="flex gap-3">

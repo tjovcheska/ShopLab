@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
+import { CancelOrderButton } from "@/components/cancel-order-button";
 import { StatusBadge } from "@/components/status-badge";
 import { getCurrentUser, requireUser } from "@/lib/auth";
 import { getDeliveryOption } from "@/lib/checkout-options";
@@ -46,7 +47,7 @@ export default async function OrderPage({
 }: PageProps<"/orders/[id]">) {
   const { id } = await params;
   const { placed } = await searchParams;
-  await requireUser(`/orders/${id}`);
+  const user = await requireUser(`/orders/${id}`);
   const order = await getVisibleOrder(id);
   if (!order) notFound();
 
@@ -72,9 +73,24 @@ export default async function OrderPage({
         </h1>
         <StatusBadge status={order.status} />
       </div>
-      <p className="text-gray-600">
-        Placed on {dateFormat.format(order.createdAt)}
-      </p>
+      <div className="flex flex-wrap items-center gap-4">
+        <p className="text-gray-600">
+          Placed on {dateFormat.format(order.createdAt)}
+        </p>
+        <a
+          href={`/orders/${order.id}/invoice`}
+          download
+          className="text-sm text-indigo-700 underline"
+        >
+          Download invoice (CSV)
+        </a>
+        {order.status === "paid" && order.userId === user.id && (
+          <CancelOrderButton
+            orderId={order.id}
+            orderNumber={formatOrderNumber(order.id)}
+          />
+        )}
+      </div>
 
       <table className="w-full rounded-lg bg-white text-left text-sm">
         <caption className="mb-2 text-left font-semibold">Items</caption>

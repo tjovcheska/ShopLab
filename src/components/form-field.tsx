@@ -1,4 +1,7 @@
-import type { InputHTMLAttributes } from "react";
+"use client";
+
+import { useRef, type ChangeEvent, type InputHTMLAttributes } from "react";
+import { useAdoptDomValue } from "@/lib/use-adopt-dom-value";
 
 type FormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   id: string;
@@ -12,6 +15,9 @@ type FormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
  * The input points at both with aria-describedby, and sets aria-invalid when
  * there is an error, so tests can use getByLabel() and
  * toHaveAccessibleDescription() / toHaveAttribute("aria-invalid", "true").
+ *
+ * For controlled inputs (value + onChange), text typed before React hydrated
+ * the page is kept (see useAdoptDomValue).
  */
 export function FormField({
   id,
@@ -20,9 +26,21 @@ export function FormField({
   hint,
   ...inputProps
 }: FormFieldProps) {
+  const ref = useRef<HTMLInputElement>(null);
   const hintId = hint ? `${id}-hint` : undefined;
   const errorId = error ? `${id}-error` : undefined;
   const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
+
+  useAdoptDomValue(ref, String(inputProps.value ?? ""), () => {
+    const input = ref.current;
+    if (input && inputProps.value !== undefined && inputProps.onChange) {
+      // Same shape the parent's onChange reads: event.target.value.
+      inputProps.onChange({
+        target: input,
+        currentTarget: input,
+      } as ChangeEvent<HTMLInputElement>);
+    }
+  });
 
   return (
     <div className="flex flex-col gap-1">
@@ -30,6 +48,7 @@ export function FormField({
         {label}
       </label>
       <input
+        ref={ref}
         id={id}
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy}

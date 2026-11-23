@@ -3,7 +3,8 @@
 //
 // The web checkout pays only through its iframe. API clients have no
 // iframe, so they send the test card details in the request instead
-// (4242 4242 4242 4242 approves, 4000 0000 0000 0002 is declined).
+// (4242 4242 4242 4242 approves, 4000 0000 0000 0002 is declined; the 3-D
+// Secure card 4000 0027 6000 3184 is declined here: it needs the website).
 import { apiRoute, json, readJson, requireApiUser } from "@/lib/api/route";
 import { serializeOrder } from "@/lib/api/serialize";
 import { db } from "@/lib/db";
@@ -36,6 +37,14 @@ export const POST = apiRoute(async (request) => {
       const result = authorizeCard(user.id, card.cardNumber, totalCents);
       if (result.status === "declined") {
         throw new ShopError(400, "PAYMENT_DECLINED", result.message);
+      }
+      if (result.status !== "approved") {
+        // 3-D Secure needs the bank-verification iframe on the website.
+        throw new ShopError(
+          400,
+          "PAYMENT_DECLINED",
+          "This card needs bank verification (3-D Secure), which only the website supports.",
+        );
       }
       return () => {}; // nothing to confirm for a direct card payment
     },

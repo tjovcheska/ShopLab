@@ -1,9 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useToast } from "@/components/toast";
 import { addToCart } from "@/lib/cart-actions";
+import { useAdoptDomValue } from "@/lib/use-adopt-dom-value";
 
 type AddToCartProps = {
   productId: number;
@@ -19,6 +20,8 @@ export function AddToCart({
 }: AddToCartProps) {
   const router = useRouter();
   const [quantity, setQuantity] = useState("1");
+  const quantityRef = useRef<HTMLInputElement>(null);
+  useAdoptDomValue(quantityRef, quantity, setQuantity);
   // Errors stay next to the button; success is announced with a toast.
   const [error, setError] = useState<string | null>(null);
   const showToast = useToast();
@@ -62,6 +65,7 @@ export function AddToCart({
               Quantity
             </label>
             <input
+              ref={quantityRef}
               id={`quantity-${productId}`}
               type="number"
               min={1}

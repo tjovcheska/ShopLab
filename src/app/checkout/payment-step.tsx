@@ -97,7 +97,8 @@ export function PaymentStep({
           title="Payment form"
           name="payment-frame"
           src={`/embed/payment?amount=${totalCents}`}
-          className="h-96 w-full rounded-md border border-gray-200"
+          // Tall enough for the nested 3-D Secure frame.
+          className="h-[30rem] w-full rounded-md border border-gray-200"
         />
       )}
     </div>

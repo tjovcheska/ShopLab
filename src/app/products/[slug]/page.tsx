@@ -4,11 +4,19 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { AddToCart } from "@/components/add-to-cart";
+import { HoverTooltip } from "@/components/hover-tooltip";
 import { Rating } from "@/components/rating";
+import { getCurrentUser } from "@/lib/auth";
+import { DELIVERY_OPTIONS } from "@/lib/checkout-options";
 import { db } from "@/lib/db";
 import { formatPrice } from "@/lib/format";
+import { hasReviewed } from "@/lib/services/reviews";
+import { isInWishlist } from "@/lib/services/wishlist";
+import { formatFileSize } from "@/lib/upload";
 import { LiveStock } from "./live-stock";
 import { ProductLinks } from "./product-links";
+import { ReviewForm } from "./review-form";
+import { WishlistButton } from "./wishlist-button";
 
 // One query shared by generateMetadata and the page.
 const getProduct = cache((slug: string) =>
@@ -18,7 +26,10 @@ const getProduct = cache((slug: string) =>
       category: true,
       reviews: {
         orderBy: [{ createdAt: "desc" }, { id: "desc" }],
-        include: { user: { select: { name: true } } },
+        include: {
+          user: { select: { name: true } },
+          photos: { orderBy: { id: "asc" } },
+        },
       },
     },
   }),
@@ -40,6 +51,13 @@ export default async function ProductPage({
   if (!product) notFound();
 
   const outOfStock = product.stock === 0;
+  const user = await getCurrentUser();
+  const [inWishlist, reviewed] = user
+    ? await Promise.all([
+        isInWishlist(user.id, product.id),
+        hasReviewed(user.id, product.id),
+      ])
+    : [false, false];
 
   return (
     <div className="flex flex-col gap-10">
@@ -95,7 +113,19 @@ export default async function ProductPage({
           )}
           <LiveStock productId={product.id} initialStock={product.stock} />
           <p className="text-gray-700">{product.description}</p>
-          <ProductLinks slug={product.slug} />
+          <div className="flex flex-wrap items-center gap-4">
+            <ProductLinks slug={product.slug} />
+            <WishlistButton
+              productId={product.id}
+              initiallySaved={inWishlist}
+            />
+            <HoverTooltip label="Delivery info">
+              {DELIVERY_OPTIONS.map(
+                (o) => `${o.label}: ${formatPrice(o.priceCents)}.`,
+              ).join(" ")}{" "}
+              You choose the delivery date at checkout.
+            </HoverTooltip>
+          </div>
           <div className="max-w-sm">
             <AddToCart
               productId={product.id}
@@ -131,11 +161,43 @@ export default async function ProductPage({
                   </header>
                   <Rating value={review.rating} />
                   <p className="mt-2">{review.comment}</p>
+                  {review.photos.length > 0 && (
+                    <ul
+                      aria-label="Attached photos"
+                      className="mt-2 flex flex-wrap gap-2 text-sm text-gray-600"
+                    >
+                      {review.photos.map((photo) => (
+                        <li
+                          key={photo.id}
+                          className="rounded bg-gray-100 px-2 py-0.5"
+                        >
+                          📎 {photo.fileName} ·{" "}
+                          {formatFileSize(photo.sizeBytes)}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </article>
               </li>
             ))}
           </ul>
         )}
+        <div className="mt-6">
+          {!user ? (
+            <p className="text-gray-700">
+              <Link
+                href={`/login?next=${encodeURIComponent(`/products/${product.slug}`)}`}
+                className="text-indigo-700 underline"
+              >
+                Log in to write a review
+              </Link>
+            </p>
+          ) : (
+            // Stays mounted after posting, so its "Thanks!" message survives
+            // the page refresh that adds the new review to the list.
+            <ReviewForm productId={product.id} alreadyReviewed={reviewed} />
+          )}
+        </div>
       </section>
     </div>
   );

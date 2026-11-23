@@ -12,44 +12,39 @@ All pages use semantic HTML (`<main>`, `<nav aria-label>`, `<form aria-label>`, 
 
 ## Coverage at a glance
 
-| Page                                  | Test IDs                                                                                                                                                                              |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Every page: header, banner, toasts    | `header-search-input`, `search-suggestions`, `cart-count`, `logout-button`, `chaos-banner`, `toast`                                                                                   |
-| `/` home                              | `new-arrivals` (product cards: **none**)                                                                                                                                              |
-| `/login`                              | `login-submit`                                                                                                                                                                        |
-| `/register`                           | `register-email`, `register-password`                                                                                                                                                 |
-| `/account`                            | `account-email`                                                                                                                                                                       |
-| `/admin`                              | **none**                                                                                                                                                                              |
-| `/products`                           | `sort-select`, `results-count`, `product-grid`, `product-skeleton`                                                                                                                    |
-| `/products/all`                       | `infinite-grid`                                                                                                                                                                       |
-| `/products/[slug]`                    | `quantity-input`, `reviews-list`, `live-stock`, `share-button`                                                                                                                        |
-| `/search`                             | `search-summary`                                                                                                                                                                      |
-| `/size-guide`                         | `size-guide-product`                                                                                                                                                                  |
-| `/popup/share`                        | `share-to-feed`                                                                                                                                                                       |
-| `/cart`                               | `item-quantity`, `line-total`, `cart-subtotal`, `empty-cart`                                                                                                                          |
-| `/checkout`                           | `checkout-progress`, `checkout-next`, `ship-address`, `ship-postal-code`, `ship-country`, `region-select`, `delivery-date-button`, `payment-approved`, `order-summary`, `order-total` |
-| `/embed/payment` (iframe in checkout) | `card-number`                                                                                                                                                                         |
-| `/orders/[id]`                        | `order-number`, `order-total`                                                                                                                                                         |
-| `/account/orders`                     | `order-history`                                                                                                                                                                       |
-| `/chaos`                              | `effective-delay`, `effective-flaky`                                                                                                                                                  |
-| `/playground`                         | **none**                                                                                                                                                                              |
-| `/playground/frames`                  | `inner-counter` (inside the inner frame only; the page, outer frame, and sibling frame have **none**)                                                                                 |
-| `/playground/dialogs`                 | `dialog-result`                                                                                                                                                                       |
-| `/playground/drag-drop`               | `sortable-list`, `sortable-order`, `column-todo`, `column-done`                                                                                                                       |
-| `/playground/shadow-dom`              | `rating-result-product`, `rating-result-delivery` (the stars inside the shadow DOM: **none**)                                                                                         |
-| `/playground/upload`                  | `multiple-file-input`                                                                                                                                                                 |
-| `/playground/table`                   | `customer-table`, `selected-count`, `row-count`                                                                                                                                       |
-| `/playground/hover`                   | `shop-menu-trigger`, `hover-result`                                                                                                                                                   |
-| `/playground/visibility`              | `hidden-attribute`, `hidden-visibility`, `hidden-opacity`, `hidden-zero-size`, `removable`, `overlay`, `covered-clicks`, `scroll-clicks`, `far-clicks`, `scroll-box`, `off-screen`    |
-| `/api-docs`                           | **none**                                                                                                                                                                              |
-| 404 and 403 pages                     | **none**                                                                                                                                                                              |
+| Page                                            | Test IDs                                                                                                                                                                              |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Every page: header, banners, toasts             | `header-search-input`, `search-suggestions`, `category-menu`, `cart-count`, `logout-button`, `chaos-banner`, `cookie-overlay`, `toast`                                                |
+| `/` home                                        | `new-arrivals` (product cards: **none**)                                                                                                                                              |
+| `/login`                                        | `login-submit`                                                                                                                                                                        |
+| `/register`                                     | `register-email`, `register-password`                                                                                                                                                 |
+| `/account`                                      | `account-email`, `avatar-input`                                                                                                                                                       |
+| `/admin`                                        | **none**                                                                                                                                                                              |
+| `/admin/orders` (order board)                   | `order-column-paid`, `order-column-shipped`, `board-status`                                                                                                                           |
+| `/admin/products`                               | `admin-products-table`, `admin-selected-count`, `admin-row-count`                                                                                                                     |
+| `/products`                                     | `sort-select`, `results-count`, `product-grid`, `product-skeleton`                                                                                                                    |
+| `/products/all`                                 | `infinite-grid`                                                                                                                                                                       |
+| `/products/[slug]`                              | `quantity-input`, `reviews-list`, `live-stock`, `share-button`, `review-photos`                                                                                                       |
+| `/search`                                       | `search-summary`                                                                                                                                                                      |
+| `/size-guide`                                   | `size-guide-product`                                                                                                                                                                  |
+| `/popup/share`                                  | `share-to-feed`                                                                                                                                                                       |
+| `/cart`                                         | `item-quantity`, `line-total`, `cart-subtotal`, `empty-cart`                                                                                                                          |
+| `/checkout`                                     | `checkout-progress`, `checkout-next`, `ship-address`, `ship-postal-code`, `ship-country`, `region-select`, `delivery-date-button`, `payment-approved`, `order-summary`, `order-total` |
+| `/embed/payment` (iframe in checkout)           | `card-number`                                                                                                                                                                         |
+| `/embed/3ds` (iframe inside the payment iframe) | **none**                                                                                                                                                                              |
+| `/orders/[id]`                                  | `order-number`, `order-total`                                                                                                                                                         |
+| `/account/orders`                               | `order-history`                                                                                                                                                                       |
+| `/account/wishlist`                             | `wishlist-status`, `empty-wishlist`                                                                                                                                                   |
+| `/chaos`                                        | `effective-delay`, `effective-flaky`                                                                                                                                                  |
+| `/api-docs`                                     | **none**                                                                                                                                                                              |
+| 404 and 403 pages                               | **none**                                                                                                                                                                              |
 
 **Deliberately without test IDs:**
 
 - **Product cards** are on the home page, `/products`, `/products/all`, and `/search`. Students must target a card with `getByRole('article', { name: 'Yoga Mat' })` and then its "Add to cart" button, which has the same name on every card.
-- **`/admin`, `/playground`, `/api-docs`, and the error pages** practice pure role, heading, and text locators.
+- **`/admin`, the bank-verification frame, `/api-docs`, and the error pages** practice pure role, heading, and text locators.
 - **Navigation links, form labels, and most buttons** everywhere, so students learn to use accessible names.
-- **The shadow DOM stars, menu items, dialog buttons, and calendar days.** Their accessible names are the intended locators.
+- **The shadow-DOM review stars, category menu links, Quick view buttons, dialog buttons, and calendar days.** Their accessible names are the intended locators.
 
 One attribute that isn't a test ID but is handy: order status badges carry `data-order-status="paid"` (and so on).
 
@@ -64,7 +59,8 @@ One attribute that isn't a test ID but is handy: order status badges carry `data
 - **"Add to cart"** is on every product card, and **"Upload"** is on two forms. Scope to the card or region first.
 - **"Remove"** is on the cart line and in the confirmation dialog. Scope to `getByRole('dialog')`.
 - **"Select Alex Smith"** (and "Sam Lee") matches two rows in the data table. Filter rows by another column first.
-- **"1 star" … "5 stars"** exist in both rating components. Scope to the component.
+- **"Add to cart"** also appears inside an open Quick view dialog, which sits inside the card's `<article>`. Scope to the dialog.
+- **Bob Brown** has two cards on the admin order board. Use the order number (`getByRole('listitem', { name: 'Order SL-000003' })`).
 - **Two comboboxes** on checkout: the header search box and the region dropdown. Use the accessible name.
 
 **Timing: wait for state, never sleep**
@@ -80,31 +76,35 @@ One attribute that isn't a test ID but is handy: order status badges carry `data
 
 **Other traps**
 
-- **Hydration.** Server-rendered buttons are visible before React attaches its handlers. ShopLab disables buttons where that's a known problem (the share popup), but a test that clicks the instant a page appears can still beat hydration. Waiting for a later state is enough.
-- **Frames.** Locators don't cross iframe boundaries. Nested frames need one `frameLocator()` (or `contentFrame()`) per level.
+- **Hydration.** Pages are server-rendered, so inputs and buttons are visible before React attaches its event handlers. Text typed before that point is kept (ShopLab adopts it into React state), but a _click_ that early can do nothing, for example on the custom region dropdown or a Quick view button. When it matters, wait for the marker ShopLab sets once React is ready: `await expect(page.locator('html')).toHaveAttribute('data-hydrated', 'true')`. Iframes have their own marker.
+- **Frames.** Locators don't cross iframe boundaries. The 3-D Secure card nests a "Bank verification" iframe _inside_ the payment iframe, so it needs one `frameLocator()` (or `contentFrame()`) per level.
 - **Shadow DOM.** Playwright locators pierce _open_ shadow roots, but `page.evaluate(() => document.querySelector(…))` doesn't.
-- **Visibility rules.** `opacity: 0` and an element at `left: -9999px` count as **visible**; `hidden`, `visibility: hidden`, and zero size don't. `aria-disabled="true"` counts as disabled. See `/playground/visibility`.
-- **Prompt dialogs.** `dialog.accept()` with no text submits an empty string in Chromium and WebKit but keeps the default in Firefox. Use `dialog.accept(dialog.defaultValue())`.
-- **Hover-only UI** on `/playground/hover` doesn't open on click or focus. `hover()` first.
+- **Visibility rules.** `visibility: hidden` (Quick view buttons, the checkout tooltip) and `display: none` (the category menu) count as **not visible**, but they're still attached. The "Delivery info" tooltip isn't in the DOM at all until hovered. When the cookie overlay is on, every click on the page fails with "…intercepts pointer events" until it's answered; after that it's removed from the DOM.
+- **Native dialogs.** "Cancel order" and "Remove picture" use `confirm()`. "Share wishlist" uses `prompt()` and then `alert()`, which is two dialogs in a row, so one handler must answer both. Without a handler, Playwright dismisses them, so nothing is cancelled or shared.
+- **Hover-only UI** (the header category menu, Quick view buttons, the tooltips) doesn't open on click or focus. `hover()` first.
 - **Dates.** The earliest delivery date depends on today's date. Compute it, or fix the browser clock with `page.clock` (the server still validates against its real date).
 
 ## Page by page
 
 ### Shared layout (every page)
 
-| Element          | `data-testid`         | Locator without a test ID                                          |
-| ---------------- | --------------------- | ------------------------------------------------------------------ |
-| Logo / home link | —                     | `getByRole('link', { name: 'ShopLab' })`                           |
-| Search box       | `header-search-input` | `getByRole('combobox', { name: 'Search products' })`               |
-| Search button    | —                     | `getByRole('search').getByRole('button', { name: 'Search' })`      |
-| Main nav links   | —                     | `getByRole('navigation', { name: 'Main' }).getByRole('link', …)`   |
-| Cart link        | —                     | `getByRole('link', { name: /^Cart, \d+ items?$/ })`                |
-| Cart count badge | `cart-count`          | (hidden from assistive tech; read the cart link's accessible name) |
-| Log in link      | —                     | `getByRole('banner').getByRole('link', { name: 'Log in' })`        |
-| Account link     | —                     | `getByRole('banner').getByRole('link', { name: 'Account' })`       |
-| Log out button   | `logout-button`       | `getByRole('button', { name: 'Log out' })`                         |
-| Footer links     | —                     | `getByRole('navigation', { name: 'Footer' }).getByRole('link', …)` |
-| Chaos banner     | `chaos-banner`        | `getByText(/^Chaos mode:/)`                                        |
+| Element                  | `data-testid`         | Locator without a test ID                                                                                                                                                                 |
+| ------------------------ | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Logo / home link         | —                     | `getByRole('link', { name: 'ShopLab' })`                                                                                                                                                  |
+| Search box               | `header-search-input` | `getByRole('combobox', { name: 'Search products' })`                                                                                                                                      |
+| Search button            | —                     | `getByRole('search').getByRole('button', { name: 'Search' })`                                                                                                                             |
+| Main nav links           | —                     | `getByRole('navigation', { name: 'Main' }).getByRole('link', …)`                                                                                                                          |
+| Category menu (hover)    | `category-menu`       | hover `getByRole('navigation', { name: 'Main' }).getByRole('link', { name: /^Products/ })`, then `getByRole('list', { name: 'Product categories' }).getByRole('link', { name: 'Books' })` |
+| Cart link                | —                     | `getByRole('link', { name: /^Cart, \d+ items?$/ })`                                                                                                                                       |
+| Cart count badge         | `cart-count`          | (hidden from assistive tech; read the cart link's accessible name)                                                                                                                        |
+| Log in link              | —                     | `getByRole('banner').getByRole('link', { name: 'Log in' })`                                                                                                                               |
+| Account link             | —                     | `getByRole('banner').getByRole('link', { name: 'Account' })`                                                                                                                              |
+| Log out button           | `logout-button`       | `getByRole('button', { name: 'Log out' })`                                                                                                                                                |
+| Footer links             | —                     | `getByRole('navigation', { name: 'Footer' }).getByRole('link', …)`                                                                                                                        |
+| Chaos banner             | `chaos-banner`        | `getByText(/^Chaos mode:/)`                                                                                                                                                               |
+| Cookie overlay (when on) | `cookie-overlay`      | `getByRole('dialog', { name: 'We use cookies' })`, then `getByRole('button', { name: 'Accept all' })` / `'Reject all'`                                                                    |
+
+The cookie overlay is off by default. Turn it on with the "Show cookie consent overlay" checkbox on `/chaos`, or with the cookie `shoplab_cookie_overlay=on`. Setting `shoplab_cookie_consent=accepted` skips it.
 
 ### Search autocomplete (header)
 
@@ -131,14 +131,16 @@ One attribute that isn't a test ID but is handy: order status badges carry `data
 
 ### Home (`/`) and product cards
 
-| Element             | `data-testid`  | Locator without a test ID                                               |
-| ------------------- | -------------- | ----------------------------------------------------------------------- |
-| New arrivals widget | `new-arrivals` | `getByRole('region', { name: 'New arrivals' })`                         |
-| A product card      | —              | `getByRole('article', { name: 'Yoga Mat' })`                            |
-| Card name link      | —              | `card.getByRole('link', { name: 'Yoga Mat' })`                          |
-| Card Add to cart    | —              | `card.getByRole('button', { name: 'Add to cart' })`                     |
-| Out of stock badge  | —              | `card.getByText('Out of stock')`                                        |
-| Card error          | —              | `card.getByRole('alert')` (e.g. "You already have all 2 in your cart.") |
+| Element             | `data-testid`  | Locator without a test ID                                                                               |
+| ------------------- | -------------- | ------------------------------------------------------------------------------------------------------- |
+| New arrivals widget | `new-arrivals` | `getByRole('region', { name: 'New arrivals' })`                                                         |
+| A product card      | —              | `getByRole('article', { name: 'Yoga Mat' })`                                                            |
+| Card name link      | —              | `card.getByRole('link', { name: 'Yoga Mat' })`                                                          |
+| Card Add to cart    | —              | `card.getByRole('button', { name: 'Add to cart' })`                                                     |
+| Out of stock badge  | —              | `card.getByText('Out of stock')`                                                                        |
+| Card error          | —              | `card.getByRole('alert')` (e.g. "You already have all 2 in your cart.")                                 |
+| Quick view button   | —              | hover the card, then `card.getByRole('button', { name: 'Quick view' })` (visibility hidden until hover) |
+| Quick view dialog   | —              | `getByRole('dialog', { name: 'Quick view: Yoga Mat' })`; it loads from the API, so wait for its content |
 
 ### Log in (`/login`)
 
@@ -167,13 +169,17 @@ Invalid inputs get `aria-invalid="true"`. The password's description also includ
 
 ### Account (`/account`) and admin (`/admin`)
 
-| Element      | `data-testid`   | Locator without a test ID                                    |
-| ------------ | --------------- | ------------------------------------------------------------ |
-| Email value  | `account-email` | `getByRole('definition').filter({ hasText: '@' })`           |
-| Welcome text | —               | `getByText('Welcome back,')`                                 |
-| Orders link  | —               | `getByRole('link', { name: 'View your order history' })`     |
-| Admin stats  | —               | `getByText('Users', { exact: true })` (the value follows it) |
-| 403 page     | —               | `getByRole('heading', { level: 1, name: 'Access denied' })`  |
+| Element               | `data-testid`   | Locator without a test ID                                                                             |
+| --------------------- | --------------- | ----------------------------------------------------------------------------------------------------- |
+| Email value           | `account-email` | `getByRole('definition').filter({ hasText: '@' })`                                                    |
+| Profile picture input | `avatar-input`  | `getByLabel('Choose a profile picture')`, then `getByRole('button', { name: 'Upload picture' })`      |
+| Profile picture       | —               | `getByRole('img', { name: 'Profile picture of Alice Anderson' })` or `{ name: 'No profile picture' }` |
+| Remove picture        | —               | `getByRole('button', { name: 'Remove picture' })` (asks with `confirm()`)                             |
+| Welcome text          | —               | `getByText('Welcome back,')`                                                                          |
+| Orders link           | —               | `getByRole('link', { name: 'View your order history' })`                                              |
+| Wishlist link         | —               | `getByRole('link', { name: 'View your wishlist' })`                                                   |
+| Admin stats           | —               | `getByText('Users', { exact: true })` (the value follows it)                                          |
+| 403 page              | —               | `getByRole('heading', { level: 1, name: 'Access denied' })`                                           |
 
 ### Products (`/products`)
 
@@ -206,17 +212,24 @@ All filters, sorting, and the page number live in the URL, so tests can start fr
 
 ### Product detail (`/products/[slug]`)
 
-| Element         | `data-testid`    | Locator without a test ID                                                             |
-| --------------- | ---------------- | ------------------------------------------------------------------------------------- |
-| Breadcrumb      | —                | `getByRole('navigation', { name: 'Breadcrumb' })`                                     |
-| Product name    | —                | `getByRole('heading', { level: 1 })`                                                  |
-| Live stock      | `live-stock`     | `getByText(/^Live stock:/)` (last refresh: `getByText(/^Updated at /)`)               |
-| Quantity input  | `quantity-input` | `getByLabel('Quantity')` (`min` 1, `max` = stock)                                     |
-| Add to cart     | —                | `getByRole('button', { name: 'Add to cart' })`                                        |
-| Size guide link | —                | `getByRole('link', { name: 'Size guide' })` (new tab: `context.waitForEvent('page')`) |
-| Share button    | `share-button`   | `getByRole('button', { name: 'Share' })` (popup: `page.waitForEvent('popup')`)        |
-| Reviews list    | `reviews-list`   | `getByRole('heading', { name: /^Customer reviews/ })`                                 |
-| One review      | —                | `getByRole('article', { name: 'Review by Alice Anderson' })`                          |
+| Element                     | `data-testid`    | Locator without a test ID                                                                                            |
+| --------------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Breadcrumb                  | —                | `getByRole('navigation', { name: 'Breadcrumb' })`                                                                    |
+| Product name                | —                | `getByRole('heading', { level: 1 })`                                                                                 |
+| Live stock                  | `live-stock`     | `getByText(/^Live stock:/)` (last refresh: `getByText(/^Updated at /)`)                                              |
+| Quantity input              | `quantity-input` | `getByLabel('Quantity')` (`min` 1, `max` = stock)                                                                    |
+| Add to cart                 | —                | `getByRole('button', { name: 'Add to cart' })`                                                                       |
+| Size guide link             | —                | `getByRole('link', { name: 'Size guide' })` (new tab: `context.waitForEvent('page')`)                                |
+| Share button                | `share-button`   | `getByRole('button', { name: 'Share' })` (popup: `page.waitForEvent('popup')`)                                       |
+| Wishlist button             | —                | `getByRole('button', { name: '♡ Add to wishlist' })`; afterwards `getByRole('link', { name: '♥ In your wishlist' })` |
+| Delivery tooltip            | —                | hover `getByText('Delivery info')`, then `getByRole('tooltip')` (added to the DOM only while hovered)                |
+| Reviews list                | `reviews-list`   | `getByRole('heading', { name: /^Customer reviews/ })`                                                                |
+| One review                  | —                | `getByRole('article', { name: 'Review by Alice Anderson' })`                                                         |
+| Review form                 | —                | `getByRole('form', { name: 'Write a review' })` (logged in, not yet reviewed)                                        |
+| Rating stars (shadow DOM)   | —                | `getByRole('group', { name: 'Your rating' }).getByRole('button', { name: '4 stars' })`                               |
+| Comment                     | —                | `form.getByLabel('Your review')`                                                                                     |
+| Photos (multiple files)     | `review-photos`  | `form.getByLabel(/Add photos/)` → `setInputFiles([...])` (up to 3 images, 2 MB each)                                 |
+| Attached photos on a review | —                | `review.getByRole('list', { name: 'Attached photos' })`                                                              |
 
 ### Search results (`/search?q=…`)
 
@@ -257,50 +270,54 @@ All filters, sorting, and the page number live in the URL, so tests can start fr
 
 ### Checkout (`/checkout`)
 
-| Element                 | `data-testid`          | Locator without a test ID                                                                                     |
-| ----------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Progress indicator      | `checkout-progress`    | `getByRole('navigation', { name: 'Checkout progress' })`; the current step has `aria-current="step"`          |
-| Step heading            | —                      | `getByRole('heading', { level: 2 })` ("Shipping address", "Delivery options", "Payment", "Review your order") |
-| Next                    | `checkout-next`        | `getByRole('button', { name: 'Next' })`                                                                       |
-| Back / Place order      | —                      | `getByRole('button', { name: 'Back' })`, `{ name: 'Place order' }`                                            |
-| Full name, City         | —                      | `getByLabel('Full name')`, `getByLabel('City')`                                                               |
-| Address                 | `ship-address`         | `getByLabel('Address', { exact: true })` ("Apartment, suite…" also contains "address")                        |
-| Postal code             | `ship-postal-code`     | `getByLabel('Postal code')`                                                                                   |
-| Country (native select) | `ship-country`         | `getByLabel('Country')` → `selectOption('CA')`                                                                |
-| State / region (custom) | `region-select`        | `getByRole('combobox', { name: 'State / region' })` → click, then `getByRole('option', { name: 'Ontario' })`  |
-| Delivery method         | —                      | `getByRole('radio', { name: /Express delivery/ })`                                                            |
-| Delivery date button    | `delivery-date-button` | `getByRole('button', { name: 'Delivery date' })`                                                              |
-| Calendar popup          | —                      | `getByRole('dialog', { name: 'Choose delivery date' })`                                                       |
-| A day                   | —                      | `calendar.getByRole('button', { name: 'Wednesday, November 25, 2026' })` (unavailable days are `disabled`)    |
-| Month navigation        | —                      | `getByRole('button', { name: 'Next month' })` / `'Previous month'`                                            |
-| Payment approved        | `payment-approved`     | `getByRole('status').filter({ hasText: 'Payment approved' })`                                                 |
-| Order summary (review)  | `order-summary`        | `getByRole('table', { name: 'Order summary' })`                                                               |
-| Total (review)          | `order-total`          | `table.getByRole('row', { name: /^Total/ })`                                                                  |
+| Element                 | `data-testid`          | Locator without a test ID                                                                                                |
+| ----------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Progress indicator      | `checkout-progress`    | `getByRole('navigation', { name: 'Checkout progress' })`; the current step has `aria-current="step"`                     |
+| Step heading            | —                      | `getByRole('heading', { level: 2 })` ("Shipping address", "Delivery options", "Payment", "Review your order")            |
+| Next                    | `checkout-next`        | `getByRole('button', { name: 'Next' })`                                                                                  |
+| Back / Place order      | —                      | `getByRole('button', { name: 'Back' })`, `{ name: 'Place order' }`                                                       |
+| Full name, City         | —                      | `getByLabel('Full name')`, `getByLabel('City')`                                                                          |
+| Address                 | `ship-address`         | `getByLabel('Address', { exact: true })` ("Apartment, suite…" also contains "address")                                   |
+| Postal code             | `ship-postal-code`     | `getByLabel('Postal code')`                                                                                              |
+| Country (native select) | `ship-country`         | `getByLabel('Country')` → `selectOption('CA')`                                                                           |
+| State / region (custom) | `region-select`        | `getByRole('combobox', { name: 'State / region' })` → click, then `getByRole('option', { name: 'Ontario' })`             |
+| Delivery method         | —                      | `getByRole('radio', { name: /Express delivery/ })`                                                                       |
+| Delivery tooltip        | —                      | hover `getByText("What's the difference?")`; the `role="tooltip"` is always attached but `visibility: hidden` until then |
+| Delivery date button    | `delivery-date-button` | `getByRole('button', { name: 'Delivery date' })`                                                                         |
+| Calendar popup          | —                      | `getByRole('dialog', { name: 'Choose delivery date' })`                                                                  |
+| A day                   | —                      | `calendar.getByRole('button', { name: 'Wednesday, November 25, 2026' })` (unavailable days are `disabled`)               |
+| Month navigation        | —                      | `getByRole('button', { name: 'Next month' })` / `'Previous month'`                                                       |
+| Payment approved        | `payment-approved`     | `getByRole('status').filter({ hasText: 'Payment approved' })`                                                            |
+| Order summary (review)  | `order-summary`        | `getByRole('table', { name: 'Order summary' })`                                                                          |
+| Total (review)          | `order-total`          | `table.getByRole('row', { name: /^Total/ })`                                                                             |
 
 ### Payment iframe (`/embed/payment`, inside checkout)
 
 Enter it with `page.frameLocator('iframe[title="Payment form"]')` or `page.getByTitle('Payment form').contentFrame()`.
 
-| Element        | `data-testid` | Locator without a test ID                                       |
-| -------------- | ------------- | --------------------------------------------------------------- |
-| Card number    | `card-number` | `frame.getByLabel('Card number')`                               |
-| Expiry / CVC   | —             | `frame.getByLabel('Expiry (MM/YY)')`, `frame.getByLabel('CVC')` |
-| Pay button     | —             | `frame.getByRole('button', { name: /^Pay \$/ })`                |
-| Declined error | —             | `frame.getByRole('alert')`                                      |
-| Approved       | —             | `frame.getByRole('status')`                                     |
+| Element                    | `data-testid` | Locator without a test ID                                                                                                                            |
+| -------------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Card number                | `card-number` | `frame.getByLabel('Card number')`                                                                                                                    |
+| Expiry / CVC               | —             | `frame.getByLabel('Expiry (MM/YY)')`, `frame.getByLabel('CVC')`                                                                                      |
+| Pay button                 | —             | `frame.getByRole('button', { name: /^Pay \$/ })`                                                                                                     |
+| Declined error             | —             | `frame.getByRole('alert')`                                                                                                                           |
+| Approved                   | —             | `frame.getByRole('status')`                                                                                                                          |
+| Bank verification (nested) | —             | `frame.frameLocator('iframe[title="Bank verification"]')`: `getByLabel('Verification code')`, `getByRole('button', { name: 'Verify' })` / `'Cancel'` |
 
-Test cards: `4242 4242 4242 4242` (approved) and `4000 0000 0000 0002` (declined). Use any future expiry date and any 3-digit CVC.
+Test cards: `4242 4242 4242 4242` (approved), `4000 0000 0000 0002` (declined), and `4000 0027 6000 3184` (3-D Secure: opens the nested "Bank verification" frame; the code is `123456`). Use any future expiry date and any 3-digit CVC.
 
 ### Orders (`/orders/[id]`, `/account/orders`)
 
-| Element          | `data-testid`   | Locator without a test ID                                                    |
-| ---------------- | --------------- | ---------------------------------------------------------------------------- |
-| Order number     | `order-number`  | `getByRole('heading', { level: 1 })` ("Order SL-000003")                     |
-| Thank-you banner | —               | `getByRole('status').filter({ hasText: 'Thank you' })`                       |
-| Order total      | `order-total`   | `getByRole('row', { name: /^Total/ })`                                       |
-| History table    | `order-history` | `getByRole('table', { name: 'Your orders, newest first' })`                  |
-| One history row  | —               | `getByRole('row').filter({ has: getByRole('link', { name: 'SL-000003' }) })` |
-| Status badge     | —               | `row.locator('[data-order-status]')` or `row.getByText('paid')`              |
+| Element          | `data-testid`   | Locator without a test ID                                                                           |
+| ---------------- | --------------- | --------------------------------------------------------------------------------------------------- |
+| Order number     | `order-number`  | `getByRole('heading', { level: 1 })` ("Order SL-000003")                                            |
+| Thank-you banner | —               | `getByRole('status').filter({ hasText: 'Thank you' })`                                              |
+| Order total      | `order-total`   | `getByRole('row', { name: /^Total/ })`                                                              |
+| History table    | `order-history` | `getByRole('table', { name: 'Your orders, newest first' })`                                         |
+| One history row  | —               | `getByRole('row').filter({ has: getByRole('link', { name: 'SL-000003' }) })`                        |
+| Status badge     | —               | `row.locator('[data-order-status]')` or `row.getByText('paid')`                                     |
+| Invoice download | —               | `getByRole('link', { name: 'Download invoice (CSV)' })` with `page.waitForEvent('download')`        |
+| Cancel order     | —               | `getByRole('button', { name: 'Cancel order SL-000002' })` (paid orders only; asks with `confirm()`) |
 
 ### Chaos settings (`/chaos`)
 
@@ -311,106 +328,47 @@ Test cards: `4242 4242 4242 4242` (approved) and `4000 0000 0000 0002` (declined
 | Save / Clear     | —                                    | `getByRole('button', { name: 'Save' })`, `{ name: 'Clear chaos settings' }` |
 | Values in effect | `effective-delay`, `effective-flaky` | `getByRole('row', { name: /Delay/ }).getByRole('cell').last()`              |
 
-### Playground index (`/playground`)
+### Wishlist (`/account/wishlist`)
 
-No test IDs. Every practice page is a link: `getByRole('link', { name: /^Frames/ })`.
+| Element        | `data-testid`     | Locator without a test ID                                                          |
+| -------------- | ----------------- | ---------------------------------------------------------------------------------- |
+| The list       | —                 | `getByRole('list', { name: 'Wishlist' })`                                          |
+| One product    | —                 | `list.getByRole('listitem').filter({ hasText: 'Rain Jacket' })`                    |
+| Move buttons   | —                 | `getByRole('button', { name: 'Move Coffee Grinder up' })` / `down`                 |
+| Remove         | —                 | `getByRole('button', { name: 'Remove Smart Watch from wishlist' })`                |
+| Share wishlist | —                 | `getByRole('button', { name: 'Share wishlist' })`: a `prompt()`, then an `alert()` |
+| Status         | `wishlist-status` | `getByRole('status')` ("Wishlist order saved.")                                    |
+| Empty state    | `empty-wishlist`  | `getByText('Your wishlist is empty.')`                                             |
 
-### Frames (`/playground/frames`)
+Reorder by dropping one product onto another with `dragTo()`; the new order is saved and survives a reload. Alice's seeded wishlist is Hiking Backpack, Smart Watch, Coffee Grinder, Rain Jacket.
 
-Frame tree: page → `Outer frame` (name `outer`) → `Inner frame` (name `inner`), plus `Sibling frame` (name `sibling`) next to the outer one.
+### Admin order board (`/admin/orders`)
 
-| Element              | `data-testid`   | Locator                                                                                               |
-| -------------------- | --------------- | ----------------------------------------------------------------------------------------------------- |
-| Outer frame          | —               | `page.frameLocator('iframe[title="Outer frame"]')` or `page.getByTitle('Outer frame').contentFrame()` |
-| Inner frame (nested) | —               | `outer.frameLocator('iframe[title="Inner frame"]')`, or `page.frame({ name: 'inner' })`               |
-| Sibling frame        | —               | `page.frameLocator('iframe[name="sibling"]')`                                                         |
-| Outer: name + Greet  | —               | `outer.getByLabel('Your name')`, `outer.getByRole('button', { name: 'Greet' })`                       |
-| Inner: counter       | `inner-counter` | `inner.getByRole('button', { name: 'Increment' })`                                                    |
-| Inner: checkbox      | —               | `inner.getByRole('checkbox', { name: 'I found the inner frame' })`                                    |
-| Sibling: newsletter  | —               | `sibling.getByLabel('Email')`, `sibling.getByRole('button', { name: 'Subscribe' })`                   |
+| Element        | `data-testid`                               | Locator without a test ID                                                  |
+| -------------- | ------------------------------------------- | -------------------------------------------------------------------------- |
+| Columns        | `order-column-paid`, `order-column-shipped` | `getByRole('region', { name: 'Paid' })`, `{ name: 'Shipped' }`             |
+| Column count   | —                                           | `column.getByRole('heading')` ("Paid (3)")                                 |
+| One order card | —                                           | `getByRole('listitem', { name: 'Order SL-000003' })`                       |
+| Move button    | —                                           | `card.getByRole('button', { name: 'Mark as shipped' })` / `'Back to paid'` |
+| Status         | `board-status`                              | `getByRole('status')` ("SL-000003 is now shipped.")                        |
 
-### Dialogs (`/playground/dialogs`)
+Drag a card onto the other column with `dragTo()`. The change is saved, so reset the data between tests (`POST /api/test/reset`). Customers get a 403.
 
-| Element | `data-testid`   | Locator                                                                          |
-| ------- | --------------- | -------------------------------------------------------------------------------- |
-| Buttons | —               | `getByRole('button', { name: 'Show alert' })`, `'Show confirm'`, `'Show prompt'` |
-| Result  | `dialog-result` | `getByRole('status')`                                                            |
+### Admin products (`/admin/products`)
 
-Register `page.once('dialog', …)` **before** clicking. Without a handler, Playwright dismisses dialogs (confirm → Cancel).
+| Element            | `data-testid`          | Locator without a test ID                                                                                                                 |
+| ------------------ | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Table              | `admin-products-table` | `getByRole('table', { name: 'Products' })`                                                                                                |
+| Filter             | —                      | `getByLabel('Filter products')`                                                                                                           |
+| Sort a column      | —                      | `getByRole('columnheader', { name: /Price/ }).getByRole('button')` (check `aria-sort`)                                                    |
+| Row checkbox       | —                      | `getByRole('checkbox', { name: 'Select Ceramic Mug', exact: true })` ("Ceramic Mug Set" also matches without `exact`)                     |
+| Select all visible | —                      | `getByRole('checkbox', { name: 'Select all visible products' })`                                                                          |
+| Selected count     | `admin-selected-count` | `getByText(/^\d+ selected$/)`                                                                                                             |
+| Bulk actions       | —                      | `getByRole('button', { name: 'Mark out of stock' })`, `{ name: 'Delete selected' }` → `getByRole('dialog', { name: 'Delete products?' })` |
+| Row count          | `admin-row-count`      | `getByText(/^Showing \d+ of/)`                                                                                                            |
+| Export CSV         | —                      | `getByRole('link', { name: 'Export CSV' })` with `page.waitForEvent('download')`                                                          |
 
-### Drag and drop (`/playground/drag-drop`)
-
-| Element          | `data-testid`                | Locator                                                      |
-| ---------------- | ---------------------------- | ------------------------------------------------------------ |
-| Sortable list    | `sortable-list`              | `getByRole('list', { name: 'Fruits' })`                      |
-| One item         | —                            | `list.getByRole('listitem').filter({ hasText: 'Apples' })`   |
-| Current order    | `sortable-order`             | `getByText(/^Order:/)`                                       |
-| Move buttons     | —                            | `getByRole('button', { name: 'Move Apples up' })`            |
-| Board columns    | `column-todo`, `column-done` | `getByRole('region', { name: 'To do' })`, `{ name: 'Done' }` |
-| Card move button | —                            | `getByRole('button', { name: 'Move “Set up CI” to To do' })` |
-
-Drag with `source.dragTo(target)`. Drop list items onto another item, and cards onto a column. It works in Chromium, Firefox, and WebKit.
-
-### Shadow DOM (`/playground/shadow-dom`)
-
-| Element            | `data-testid`                                     | Locator                                                                                  |
-| ------------------ | ------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| A rating component | —                                                 | `locator('shoplab-rating#product')` or `getByRole('group', { name: 'Product quality' })` |
-| A star (in shadow) | —                                                 | `group.getByRole('button', { name: '4 stars' })`                                         |
-| Clear              | —                                                 | `group.getByRole('button', { name: 'Clear' })`                                           |
-| Result (light DOM) | `rating-result-product`, `rating-result-delivery` | `getByText(/^Product quality:/)`                                                         |
-
-### Upload and download (`/playground/upload`)
-
-| Element           | `data-testid`         | Locator                                                                                           |
-| ----------------- | --------------------- | ------------------------------------------------------------------------------------------------- |
-| Single-file input | —                     | `getByRole('region', { name: 'Single file' }).getByLabel('Choose a file')`                        |
-| Multi-file input  | `multiple-file-input` | `getByLabel('Choose files')`                                                                      |
-| Upload buttons    | —                     | `region.getByRole('button', { name: 'Upload' })`                                                  |
-| Uploaded files    | —                     | `getByRole('list', { name: 'Single file: uploaded files' })`                                      |
-| Error             | —                     | `region.getByRole('alert')`                                                                       |
-| Download link     | —                     | `getByRole('link', { name: 'Download product list (CSV)' })` with `page.waitForEvent('download')` |
-
-Use `setInputFiles()` with paths or `{ name, mimeType, buffer }` objects. Files over 2 MB are rejected.
-
-### Data table (`/playground/table`)
-
-| Element            | `data-testid`    | Locator                                                                                 |
-| ------------------ | ---------------- | --------------------------------------------------------------------------------------- |
-| Table              | `customer-table` | `getByRole('table', { name: 'Customers' })`                                             |
-| Filter             | —                | `getByLabel('Filter customers')`                                                        |
-| Sort a column      | —                | `getByRole('columnheader', { name: /Orders/ }).getByRole('button')` (check `aria-sort`) |
-| A specific row     | —                | `getByRole('row').filter({ hasText: 'Alex Smith' }).filter({ hasText: 'Toronto' })`     |
-| Row checkbox       | —                | `row.getByRole('checkbox')`                                                             |
-| Select all visible | —                | `getByRole('checkbox', { name: 'Select all visible customers' })`                       |
-| Selected count     | `selected-count` | `getByRole('status')`                                                                   |
-| Row count          | `row-count`      | `getByText(/^Showing \d+ of/)`                                                          |
-
-### Hover (`/playground/hover`)
-
-| Element                  | `data-testid`       | Locator                                                                                                                |
-| ------------------------ | ------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Menu trigger             | `shop-menu-trigger` | `getByText('Shop ▾')` → `hover()`                                                                                      |
-| Menu items               | —                   | `getByRole('button', { name: 'Clothing' })` (hidden until hover)                                                       |
-| Submenu                  | —                   | hover `getByText('Electronics')`, then `getByRole('button', { name: 'Headphones' })`                                   |
-| Tooltip (added on hover) | —                   | hover `getByText('Shipping info')`, then `getByRole('tooltip')`                                                        |
-| Tooltip (always in DOM)  | —                   | hover `getByText('Returns policy')`; `getByText('Free returns within 30 days.')` is attached but hidden before         |
-| Hover card buttons       | —                   | hover `getByRole('article', { name: 'Wireless Headphones' })`, then `getByRole('button', { name: 'Add to wishlist' })` |
-| Last action              | `hover-result`      | `getByRole('status')`                                                                                                  |
-
-### Visibility (`/playground/visibility`)
-
-| Element              | `data-testid`                                                                 | Notes                                                                                                       |
-| -------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Hidden variants      | `hidden-attribute`, `hidden-visibility`, `hidden-opacity`, `hidden-zero-size` | Before "Show the messages", only `hidden-opacity` counts as visible                                         |
-| Removable paragraph  | `removable`                                                                   | `toBeAttached()` / `not.toBeAttached()`                                                                     |
-| Submit (disabled)    | —                                                                             | `getByRole('button', { name: 'Submit' })`, enabled after checking "I agree to the terms"                    |
-| aria-disabled button | —                                                                             | `getByRole('button', { name: 'Looks disabled (aria-disabled)' })`; `toBeDisabled()` passes for it           |
-| Covered button       | —                                                                             | `getByRole('button', { name: 'Covered button' })`; clicking fails until the overlay is removed              |
-| Overlay              | `overlay`                                                                     | `getByText('Overlay', { exact: true })`; removed with `getByRole('button', { name: 'Remove the overlay' })` |
-| Click counters       | `covered-clicks`, `scroll-clicks`, `far-clicks`                               | —                                                                                                           |
-| Scroll box           | `scroll-box`                                                                  | the button inside is scrolled into view automatically                                                       |
-| Off-screen element   | `off-screen`                                                                  | counts as visible; `toBeInViewport()` fails                                                                 |
+Products that appear in an order are never deleted; the alert lists them.
 
 ### API docs (`/api-docs`)
 

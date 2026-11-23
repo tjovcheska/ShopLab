@@ -1,8 +1,10 @@
 "use client";
 
+import { useRef, type Dispatch, type SetStateAction } from "react";
 import { FormField } from "@/components/form-field";
 import { RegionSelect } from "@/components/region-select";
 import { COUNTRIES, getCountry } from "@/lib/regions";
+import { useAdoptDomValue } from "@/lib/use-adopt-dom-value";
 import type { ShippingField, ShippingInput } from "@/lib/validation/checkout";
 
 export function ShippingStep({
@@ -12,10 +14,16 @@ export function ShippingStep({
 }: {
   values: ShippingInput;
   errors: Partial<Record<ShippingField, string>>;
-  onChange: (values: ShippingInput) => void;
+  onChange: Dispatch<SetStateAction<ShippingInput>>;
 }) {
+  const countryRef = useRef<HTMLSelectElement>(null);
+  useAdoptDomValue(countryRef, values.country, (country) =>
+    onChange((previous) => ({ ...previous, country, region: "" })),
+  );
+  // Functional updates: several fields may change in a row (e.g. text typed
+  // before hydration is adopted field by field).
   const set = (field: ShippingField, value: string) =>
-    onChange({ ...values, [field]: value });
+    onChange((previous) => ({ ...previous, [field]: value }));
   const regions = getCountry(values.country)?.regions ?? [];
 
   return (
@@ -74,14 +82,16 @@ export function ShippingStep({
           Country
         </label>
         <select
+          ref={countryRef}
           id="ship-country"
           autoComplete="country"
           data-testid="ship-country"
           value={values.country}
           // A new country has different regions, so the region is cleared.
-          onChange={(e) =>
-            onChange({ ...values, country: e.target.value, region: "" })
-          }
+          onChange={(e) => {
+            const country = e.target.value;
+            onChange((previous) => ({ ...previous, country, region: "" }));
+          }}
           className="rounded-md border border-gray-300 bg-white px-3 py-2"
         >
           {COUNTRIES.map((country) => (

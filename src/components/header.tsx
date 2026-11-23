@@ -4,13 +4,19 @@ import { getCurrentUser } from "@/lib/auth";
 import { logoutAction } from "@/lib/auth-actions";
 import { db } from "@/lib/db";
 
-// Test IDs: only the search input, the cart count badge, and the logout
-// button have data-testid. The logo, nav links, login and account links
+// Test IDs: only the search input, the cart count badge, the category menu,
+// and the logout button have data-testid. The logo, nav links, login and account links
 // deliberately have none (see docs/LOCATORS.md), so they must be located by
 // role and name.
 export async function Header() {
   const user = await getCurrentUser();
-  const cartCount = user ? await getCartItemCount(user.id) : 0;
+  const [cartCount, categories] = await Promise.all([
+    user ? getCartItemCount(user.id) : 0,
+    db.category.findMany({
+      orderBy: { name: "asc" },
+      select: { name: true, slug: true },
+    }),
+  ]);
 
   return (
     <header className="border-b border-gray-200 bg-white">
@@ -26,15 +32,39 @@ export async function Header() {
 
         <nav aria-label="Main">
           <ul className="flex gap-4 text-sm font-medium">
-            <li>
+            {/* Hover-only category menu: display:none until the "Products"
+                item is hovered (no click or focus). The inner padding keeps
+                the menu open while the mouse moves down into it. */}
+            <li className="group/products relative">
               <Link href="/products" className="hover:text-indigo-700">
-                Products
+                Products <span aria-hidden="true">▾</span>
               </Link>
-            </li>
-            <li>
-              <Link href="/playground" className="hover:text-indigo-700">
-                Playground
-              </Link>
+              <div className="absolute top-full left-0 z-30 hidden pt-2 group-hover/products:block">
+                <ul
+                  aria-label="Product categories"
+                  data-testid="category-menu"
+                  className="w-56 rounded-md border border-gray-200 bg-white py-1 font-normal shadow-lg"
+                >
+                  {categories.map((category) => (
+                    <li key={category.slug}>
+                      <Link
+                        href={`/products?category=${category.slug}`}
+                        className="block px-4 py-2 hover:bg-indigo-50 hover:text-indigo-900"
+                      >
+                        {category.name}
+                      </Link>
+                    </li>
+                  ))}
+                  <li className="border-t border-gray-100">
+                    <Link
+                      href="/products/all"
+                      className="block px-4 py-2 hover:bg-indigo-50 hover:text-indigo-900"
+                    >
+                      All products on one page
+                    </Link>
+                  </li>
+                </ul>
+              </div>
             </li>
             <li>
               <Link href="/api-docs" className="hover:text-indigo-700">

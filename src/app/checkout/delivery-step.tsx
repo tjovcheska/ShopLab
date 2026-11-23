@@ -24,7 +24,28 @@ export function DeliveryStep({
       <fieldset
         aria-describedby={errors.method ? "delivery-method-error" : undefined}
       >
-        <legend className="mb-2 text-sm font-medium">Delivery method</legend>
+        <legend className="mb-2 text-sm font-medium">
+          Delivery method{" "}
+          {/* CSS-only tooltip: always in the DOM, visibility:hidden until the
+              trigger is hovered. */}
+          <span className="group/express relative ml-1 font-normal">
+            <span
+              tabIndex={0}
+              aria-describedby="express-tooltip"
+              className="cursor-help border-b border-dashed border-gray-500 text-gray-600"
+            >
+              What&apos;s the difference?
+            </span>
+            <span
+              id="express-tooltip"
+              role="tooltip"
+              className="invisible absolute top-full left-0 z-20 mt-2 w-64 rounded-md bg-gray-900 px-3 py-2 text-sm text-white group-hover/express:visible"
+            >
+              Both arrive on the date you choose. Express orders get priority
+              handling and live tracking.
+            </span>
+          </span>
+        </legend>
         <div className="flex flex-col gap-2">
           {DELIVERY_OPTIONS.map((option) => (
             <label
