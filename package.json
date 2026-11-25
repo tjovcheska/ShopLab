@@ -13,8 +13,7 @@
     "format:check": "prettier --check .",
     "db:migrate": "prisma migrate dev && prisma generate",
     "db:seed": "prisma db seed",
-    "db:reset": "prisma migrate reset --force && prisma generate && prisma db seed",
-    "test:smoke": "npm --prefix smoke test"
+    "db:reset": "prisma migrate reset --force && prisma generate && prisma db seed"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.10.1",

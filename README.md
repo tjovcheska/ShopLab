@@ -49,7 +49,6 @@ For test automation you'll usually want the test hooks on (`TEST_HOOKS_ENABLED=t
 | `npm run db:migrate`   | Create/apply a migration after editing `prisma/schema.prisma`, then regenerate the client |
 | `npm run db:seed`      | Wipe all tables and insert the seed data again                                            |
 | `npm run db:reset`     | Drop the database, re-apply all migrations, regenerate, and seed                          |
-| `npm run test:smoke`   | Instructor smoke test against both Docker environments (see below)                        |
 | `postinstall`          | Runs automatically after `npm install`: generates the Prisma client                       |
 
 The seed is deterministic: every run produces the same ids, dates, and data.
@@ -108,17 +107,6 @@ docker compose down
 
 Each container applies migrations and loads the seed data on every start, so restarting gives fresh data.
 
-### Instructor smoke test
-
-`smoke/` holds a tiny Playwright suite (separate from any student tests) that checks the home page and `/api/test/health` in both environments:
-
-```bash
-cd smoke && npm install && npx playwright install chromium && cd ..
-npm run test:smoke                 # with both environments running
-```
-
-`docs/ci-example.yml` shows a GitHub Actions job that starts the containers, waits for health, and runs the smoke test. It's an example only, not an active workflow.
-
 ## Test support endpoints
 
 Only available when `TEST_HOOKS_ENABLED=true` (otherwise every `/api/test/*` path returns a 404). They ignore chaos settings.
@@ -162,8 +150,7 @@ src/
   lib/db.ts           Prisma client (better-sqlite3 adapter)
   generated/prisma/   generated Prisma client (gitignored)
 public/products/      product images
-docs/                 instructor docs (decisions, locators, CI example, …)
-smoke/                instructor smoke test (its own package)
+docs/                 instructor docs (decisions, locators, …)
 Dockerfile, docker-compose.yml, scripts/docker-start.sh
 ```
 

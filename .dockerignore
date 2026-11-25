@@ -8,8 +8,5 @@ src/generated
 .env.*
 !.env.example
 .git
-smoke/node_modules
-smoke/test-results
-smoke/playwright-report
 npm-debug.log*
 .DS_Store
