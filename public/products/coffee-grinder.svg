@@ -1,6 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Coffee Grinder">
-  <rect width="400" height="300" fill="#16a34a" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#16a34a"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">CG</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Coffee Grinder</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0fdf4"/><stop offset="1" stop-color="#dcfce7"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="80" ry="12" fill="#0f172a" opacity="0.10"/>
+    <path d="M150 50 L250 50 L232 125 L168 125 Z" fill="#ecfdf5" stroke="#1f2937" stroke-width="4"/>
+    <ellipse cx="185" cy="108" rx="9" ry="6" fill="#78350f"/><ellipse cx="205" cy="114" rx="9" ry="6" fill="#92400e"/>
+    <ellipse cx="220" cy="102" rx="9" ry="6" fill="#78350f"/><ellipse cx="196" cy="94" rx="9" ry="6" fill="#92400e"/>
+    <ellipse cx="212" cy="88" rx="9" ry="6" fill="#78350f"/>
+    <rect x="140" y="40" width="120" height="14" rx="6" fill="#374151"/>
+    <rect x="148" y="125" width="104" height="125" rx="12" fill="#374151" stroke="#1f2937" stroke-width="4"/>
+    <circle cx="200" cy="160" r="18" fill="#9ca3af" stroke="#1f2937" stroke-width="3"/>
+    <path d="M200 146 L200 160" stroke="#1f2937" stroke-width="4" stroke-linecap="round"/>
+    <rect x="166" y="195" width="68" height="44" rx="6" fill="#4b5563"/>
+    <rect x="172" y="215" width="56" height="20" rx="4" fill="#78350f"/>
 </svg>

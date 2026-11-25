@@ -1,6 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Leather Belt">
-  <rect width="400" height="300" fill="#db2777" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#db2777"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">LB</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Leather Belt</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdf2f8"/><stop offset="1" stop-color="#fce7f3"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="150" ry="12" fill="#0f172a" opacity="0.10"/>
+    <path d="M110 150 C110 90 150 80 200 80 C250 80 290 90 290 150 C290 210 250 220 200 220" fill="none" stroke="#1f2937" stroke-width="40" stroke-linecap="round"/>
+    <path d="M110 150 C110 90 150 80 200 80 C250 80 290 90 290 150 C290 210 250 220 200 220" fill="none" stroke="#92400e" stroke-width="32" stroke-linecap="round"/>
+    <path d="M200 220 L330 220" stroke="#1f2937" stroke-width="40" stroke-linecap="round"/>
+    <path d="M200 220 L330 220" stroke="#92400e" stroke-width="32" stroke-linecap="round"/>
+    <circle cx="265" cy="220" r="4" fill="#451a03"/><circle cx="285" cy="220" r="4" fill="#451a03"/><circle cx="305" cy="220" r="4" fill="#451a03"/>
+    <path d="M110 150 C110 210 150 220 175 220" fill="none" stroke="#1f2937" stroke-width="40"/>
+    <path d="M110 150 C110 210 150 220 175 220" fill="none" stroke="#92400e" stroke-width="32"/>
+    <rect x="160" y="192" width="44" height="56" rx="8" fill="none" stroke="#d1d5db" stroke-width="9"/>
+    <rect x="160" y="192" width="44" height="56" rx="8" fill="none" stroke="#1f2937" stroke-width="2"/>
+    <path d="M182 196 V222" stroke="#d1d5db" stroke-width="6" stroke-linecap="round"/>
 </svg>

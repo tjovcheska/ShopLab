@@ -1,6 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Resistance Bands">
-  <rect width="400" height="300" fill="#ea580c" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#ea580c"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">RB</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Resistance Bands</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff7ed"/><stop offset="1" stop-color="#ffedd5"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="130" ry="12" fill="#0f172a" opacity="0.10"/>
+    <ellipse cx="160" cy="155" rx="95" ry="60" fill="none" stroke="#ef4444" stroke-width="14"/>
+    <ellipse cx="235" cy="145" rx="95" ry="60" fill="none" stroke="#facc15" stroke-width="14"/>
+    <ellipse cx="200" cy="180" rx="95" ry="52" fill="none" stroke="#22c55e" stroke-width="14"/>
+    <ellipse cx="195" cy="120" rx="80" ry="45" fill="none" stroke="#3b82f6" stroke-width="14"/>
 </svg>

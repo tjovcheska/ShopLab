@@ -1,6 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Running Shoes">
-  <rect width="400" height="300" fill="#db2777" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#db2777"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">RS</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Running Shoes</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdf2f8"/><stop offset="1" stop-color="#fce7f3"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="150" ry="12" fill="#0f172a" opacity="0.10"/>
+    <path d="M60 205 Q58 175 85 170 L170 150 Q195 110 230 112 L250 140 Q300 150 335 175 Q350 190 345 210 Z"
+      fill="#db2777" stroke="#1f2937" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M55 205 L345 210 Q350 232 330 236 L80 236 Q55 232 55 205 Z" fill="#f9fafb" stroke="#1f2937" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M80 225 H330" stroke="#d1d5db" stroke-width="3"/>
+    <path d="M110 190 Q200 160 300 195" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+    <path d="M195 128 L215 150 M210 122 L230 146 M225 118 L243 140" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
 </svg>

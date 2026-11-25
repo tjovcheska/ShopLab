@@ -1,6 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Web Accessibility Handbook">
-  <rect width="400" height="300" fill="#9333ea" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#9333ea"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">WA</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Web Accessibility Handbook</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#faf5ff"/><stop offset="1" stop-color="#f3e8ff"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="90" ry="12" fill="#0f172a" opacity="0.10"/><g transform="translate(195 142) scale(1)">
+    <path d="M62 -100 L80 -88 L80 108 L62 100 Z" fill="#f3f4f6" stroke="#1f2937" stroke-width="3"/>
+    <path d="M67 -95 L67 101 M72 -92 L72 103 M76 -89 L76 105" stroke="#d1d5db" stroke-width="2"/>
+    <rect x="-70" y="-100" width="132" height="200" rx="6" fill="#7c3aed" stroke="#1f2937" stroke-width="4"/>
+    <rect x="-70" y="-100" width="14" height="200" rx="4" fill="#000000" opacity="0.2"/>
+    <g transform="translate(-4 -38)"><circle cx="0" cy="0" r="32" fill="#ffffff"/><circle cx="0" cy="-17" r="6" fill="#7c3aed"/><path d="M-18 -5 H18 M0 -5 V10 M0 10 L-10 24 M0 10 L10 24" stroke="#7c3aed" stroke-width="5" stroke-linecap="round"/></g>
+    <text x="-4" y="52" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle">Web Access-</text><text x="-4" y="74" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle">ibility</text>
+  </g>
 </svg>

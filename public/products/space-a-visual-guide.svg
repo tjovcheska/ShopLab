@@ -1,6 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Space: A Visual Guide">
-  <rect width="400" height="300" fill="#9333ea" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#9333ea"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">SA</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Space: A Visual Guide</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#faf5ff"/><stop offset="1" stop-color="#f3e8ff"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="90" ry="12" fill="#0f172a" opacity="0.10"/><g transform="translate(195 142) scale(1)">
+    <path d="M62 -100 L80 -88 L80 108 L62 100 Z" fill="#f3f4f6" stroke="#1f2937" stroke-width="3"/>
+    <path d="M67 -95 L67 101 M72 -92 L72 103 M76 -89 L76 105" stroke="#d1d5db" stroke-width="2"/>
+    <rect x="-70" y="-100" width="132" height="200" rx="6" fill="#0f172a" stroke="#1f2937" stroke-width="4"/>
+    <rect x="-70" y="-100" width="14" height="200" rx="4" fill="#000000" opacity="0.2"/>
+    <g transform="translate(-4 -38)"><circle cx="0" cy="0" r="22" fill="#f59e0b"/><ellipse cx="0" cy="0" rx="40" ry="11" fill="none" stroke="#fde68a" stroke-width="4" transform="rotate(-18)"/><circle cx="-34" cy="-30" r="2" fill="#ffffff"/><circle cx="34" cy="26" r="2.5" fill="#ffffff"/></g>
+    <text x="-4" y="52" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle">Space: A</text><text x="-4" y="74" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle">Visual Guide</text>
+  </g>
 </svg>

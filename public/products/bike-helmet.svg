@@ -1,6 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Bike Helmet">
-  <rect width="400" height="300" fill="#ea580c" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#ea580c"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">BH</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Bike Helmet</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff7ed"/><stop offset="1" stop-color="#ffedd5"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="140" ry="12" fill="#0f172a" opacity="0.10"/>
+    <path d="M70 200 Q75 70 210 65 Q330 65 335 185 L300 200 Z" fill="#ea580c" stroke="#1f2937" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M110 140 Q150 95 195 92 L190 130 Q150 135 125 150 Z" fill="#1f2937"/>
+    <path d="M215 92 Q265 95 295 130 L280 150 Q250 128 215 128 Z" fill="#1f2937"/>
+    <path d="M170 150 Q200 140 235 150 L230 175 Q200 168 175 175 Z" fill="#1f2937"/>
+    <path d="M60 200 L310 200 L300 215 L75 215 Z" fill="#111827"/>
+    <path d="M120 215 Q140 260 180 245 M270 215 Q260 255 225 248" fill="none" stroke="#1f2937" stroke-width="4"/>
+    <circle cx="320" cy="172" r="7" fill="#ef4444"/>
 </svg>

@@ -1,6 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Wireless Mouse">
-  <rect width="400" height="300" fill="#2563eb" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#2563eb"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">WM</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Wireless Mouse</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eff6ff"/><stop offset="1" stop-color="#dbeafe"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="70" ry="12" fill="#0f172a" opacity="0.10"/>
+    <path d="M200 45 C255 45 270 110 268 165 C266 225 240 255 200 255 C160 255 134 225 132 165 C130 110 145 45 200 45 Z" fill="#e5e7eb" stroke="#1f2937" stroke-width="4"/>
+    <path d="M200 45 L200 135 M134 135 Q200 150 266 135" fill="none" stroke="#1f2937" stroke-width="3"/>
+    <rect x="192" y="70" width="16" height="36" rx="8" fill="#1f2937"/>
+    <path d="M150 170 Q152 230 190 245" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.7"/>
+    <rect x="186" y="170" width="28" height="6" rx="3" fill="#22c55e"/>
 </svg>

@@ -1,6 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Cooking for Beginners">
-  <rect width="400" height="300" fill="#9333ea" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#9333ea"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">CF</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Cooking for Beginners</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#faf5ff"/><stop offset="1" stop-color="#f3e8ff"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="90" ry="12" fill="#0f172a" opacity="0.10"/><g transform="translate(195 142) scale(1)">
+    <path d="M62 -100 L80 -88 L80 108 L62 100 Z" fill="#f3f4f6" stroke="#1f2937" stroke-width="3"/>
+    <path d="M67 -95 L67 101 M72 -92 L72 103 M76 -89 L76 105" stroke="#d1d5db" stroke-width="2"/>
+    <rect x="-70" y="-100" width="132" height="200" rx="6" fill="#f97316" stroke="#1f2937" stroke-width="4"/>
+    <rect x="-70" y="-100" width="14" height="200" rx="4" fill="#000000" opacity="0.2"/>
+    <g transform="translate(-4 -38)"><path d="M-30 -2 H30 V20 Q30 30 20 30 H-20 Q-30 30 -30 20 Z" fill="#ffffff"/><path d="M-36 -2 H36" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/><path d="M-12 -12 Q-6 -22 -12 -32 M6 -12 Q12 -22 6 -32" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/></g>
+    <text x="-4" y="52" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle">Cooking for</text><text x="-4" y="74" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle">Beginners</text>
+  </g>
 </svg>

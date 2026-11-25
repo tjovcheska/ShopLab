@@ -1,6 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Electric Kettle">
-  <rect width="400" height="300" fill="#16a34a" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#16a34a"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">EK</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Electric Kettle</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0fdf4"/><stop offset="1" stop-color="#dcfce7"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="90" ry="12" fill="#0f172a" opacity="0.10"/>
+    <path d="M258 100 Q312 100 306 160 Q300 212 262 218" fill="none" stroke="#1f2937" stroke-width="16" stroke-linecap="round"/>
+    <path d="M142 112 L108 86 L118 78 L156 100 Z" fill="#d1d5db" stroke="#1f2937" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M150 80 L250 80 L268 225 L132 225 Z" fill="#d1d5db" stroke="#1f2937" stroke-width="4" stroke-linejoin="round"/>
+    <rect x="182" y="66" width="36" height="16" rx="6" fill="#1f2937"/>
+    <rect x="218" y="110" width="14" height="90" rx="7" fill="#38bdf8" stroke="#1f2937" stroke-width="2"/>
+    <rect x="160" y="92" width="10" height="120" rx="5" fill="#ffffff" opacity="0.6"/>
+    <rect x="120" y="225" width="160" height="22" rx="8" fill="#1f2937"/>
+    <circle cx="245" cy="236" r="4" fill="#22c55e"/>
 </svg>

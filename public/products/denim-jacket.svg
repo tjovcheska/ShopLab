@@ -1,6 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Denim Jacket">
-  <rect width="400" height="300" fill="#db2777" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#db2777"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">DJ</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Denim Jacket</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdf2f8"/><stop offset="1" stop-color="#fce7f3"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="120" ry="12" fill="#0f172a" opacity="0.10"/>
+    <path d="M150 50 L100 70 L70 200 L105 210 L120 120 L120 250 L280 250 L280 120 L295 210 L330 200 L300 70 L250 50 L200 95 Z"
+      fill="#3b6db3" stroke="#1f2937" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M150 50 L175 110 L200 95 L225 110 L250 50" fill="#2c5591" stroke="#1f2937" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M200 95 V250" stroke="#1f2937" stroke-width="3"/>
+    <circle cx="210" cy="140" r="4" fill="#e5e7eb"/><circle cx="210" cy="175" r="4" fill="#e5e7eb"/><circle cx="210" cy="210" r="4" fill="#e5e7eb"/>
+    <rect x="135" y="140" width="45" height="38" rx="4" fill="none" stroke="#bfdbfe" stroke-width="2.5" stroke-dasharray="5 4"/>
+    <rect x="222" y="140" width="45" height="38" rx="4" fill="none" stroke="#bfdbfe" stroke-width="2.5" stroke-dasharray="5 4"/>
+    <path d="M120 230 H280" stroke="#bfdbfe" stroke-width="2.5" stroke-dasharray="5 4"/>
 </svg>

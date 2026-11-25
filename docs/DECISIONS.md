@@ -9,7 +9,7 @@ Choices made where PLAN.md was ambiguous or where the toolchain forced a choice.
 - **No Google Fonts.** `next/font/google` downloads fonts at build time, which fails in offline Docker or CI builds, so pages use the system font stack.
 - **No `.env` needed.** The acceptance command (`npm install && npm run db:reset && npm run dev`) has no step that copies `.env.example`. So `DATABASE_URL` falls back to `file:./dev.db` in both `prisma.config.ts` and `src/lib/db.ts`.
 - **Deterministic seed details.** Ids restart at 1 on every seed, products have fixed `createdAt` dates one day apart, and passwords are hashed with a fixed bcrypt salt, so even the hashes match between runs. A fixed salt is only acceptable because the demo passwords are public.
-- **Product images.** These are generated SVG placeholders in `public/products/<slug>.svg`, created by `scripts/generate-product-images.ts` and committed to the repo.
+- **Product images.** Each seeded product has its own flat vector illustration in `public/products/<slug>.svg`. They are drawn by code in `scripts/generate-product-images.ts`, which fails if a product has no drawing, and the files are committed. They are self-made, so there is no licensing and nothing to fetch, they work offline and in Docker, and they are deterministic. Products created through the API use `placeholder.svg`.
 - **Enums.** `User.role` and `Order.status` are Prisma enums. SQLite supports them in Prisma 6.2 and later.
 - **Prices.** Shown in USD (`$12.34`).
 - **Header placeholders.** In Phase 1 the cart count is always 0 and the header always shows "Log in". Phase 2 connects both to the session.

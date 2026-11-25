@@ -1,6 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="4K Monitor">
-  <rect width="400" height="300" fill="#2563eb" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#2563eb"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">4M</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">4K Monitor</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eff6ff"/><stop offset="1" stop-color="#dbeafe"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="110" ry="12" fill="#0f172a" opacity="0.10"/>
+    <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#bae6fd"/></linearGradient></defs>
+    <rect x="182" y="200" width="36" height="45" fill="#6b7280"/>
+    <ellipse cx="200" cy="250" rx="70" ry="10" fill="#4b5563"/>
+    <rect x="60" y="45" width="280" height="165" rx="10" fill="#111827" stroke="#1f2937" stroke-width="4"/>
+    <rect x="72" y="57" width="256" height="141" rx="3" fill="url(#sky)"/>
+    <polygon points="72,198 140,120 190,170 240,100 328,198" fill="#16a34a"/>
+    <polygon points="140,120 155,137 125,137" fill="#ffffff"/>
+    <polygon points="240,100 258,121 222,121" fill="#ffffff"/>
+    <circle cx="290" cy="88" r="14" fill="#fde047"/>
+    <text x="84" y="74" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#ffffff">4K</text>
 </svg>

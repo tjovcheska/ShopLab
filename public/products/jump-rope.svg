@@ -1,6 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Jump Rope">
-  <rect width="400" height="300" fill="#ea580c" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#ea580c"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">JR</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Jump Rope</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff7ed"/><stop offset="1" stop-color="#ffedd5"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="140" ry="12" fill="#0f172a" opacity="0.10"/>
+    <path d="M110 115 C70 280 330 280 290 115" fill="none" stroke="#2563eb" stroke-width="7" stroke-linecap="round"/>
+    <g transform="rotate(-12 110 85)">
+      <rect x="96" y="50" width="28" height="70" rx="12" fill="#ea580c" stroke="#1f2937" stroke-width="4"/>
+      <path d="M100 70 h20 M100 90 h20" stroke="#9a3412" stroke-width="3"/>
+    </g>
+    <g transform="rotate(12 290 85)">
+      <rect x="276" y="50" width="28" height="70" rx="12" fill="#ea580c" stroke="#1f2937" stroke-width="4"/>
+      <path d="M280 70 h20 M280 90 h20" stroke="#9a3412" stroke-width="3"/>
+    </g>
 </svg>

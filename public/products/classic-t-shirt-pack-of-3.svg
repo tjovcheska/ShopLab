@@ -1,6 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Classic T-Shirt (Pack of 3)">
-  <rect width="400" height="300" fill="#db2777" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#db2777"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">CT</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Classic T-Shirt (Pack of 3)</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdf2f8"/><stop offset="1" stop-color="#fce7f3"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="150" ry="12" fill="#0f172a" opacity="0.10"/>
+    <g transform="translate(130 145) scale(0.75)">
+    <path d="M-38 -70 L-80 -50 L-100 -10 L-72 2 L-60 -18 L-60 80 L60 80 L60 -18 L72 2 L100 -10 L80 -50 L38 -70 Q0 -48 -38 -70 Z"
+      fill="#111827" stroke="#000000" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M-38 -70 Q0 -40 38 -70" fill="none" stroke="#000000" stroke-width="4"/>
+  </g><g transform="translate(270 145) scale(0.75)">
+    <path d="M-38 -70 L-80 -50 L-100 -10 L-72 2 L-60 -18 L-60 80 L60 80 L60 -18 L72 2 L100 -10 L80 -50 L38 -70 Q0 -48 -38 -70 Z"
+      fill="#9ca3af" stroke="#1f2937" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M-38 -70 Q0 -40 38 -70" fill="none" stroke="#1f2937" stroke-width="4"/>
+  </g><g transform="translate(200 170) scale(0.75)">
+    <path d="M-38 -70 L-80 -50 L-100 -10 L-72 2 L-60 -18 L-60 80 L60 80 L60 -18 L72 2 L100 -10 L80 -50 L38 -70 Q0 -48 -38 -70 Z"
+      fill="#f9fafb" stroke="#1f2937" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M-38 -70 Q0 -40 38 -70" fill="none" stroke="#1f2937" stroke-width="4"/>
+  </g>
 </svg>

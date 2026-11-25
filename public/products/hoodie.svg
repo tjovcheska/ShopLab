@@ -1,6 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Hoodie">
-  <rect width="400" height="300" fill="#db2777" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#db2777"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">H</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Hoodie</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdf2f8"/><stop offset="1" stop-color="#fce7f3"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="120" ry="12" fill="#0f172a" opacity="0.10"/>
+    <path d="M150 85 Q145 35 200 35 Q255 35 250 85 L300 100 L330 220 L298 230 L280 150 L280 255 L120 255 L120 150 L102 230 L70 220 L100 100 Z"
+      fill="#6b7280" stroke="#1f2937" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M165 88 Q168 55 200 55 Q232 55 235 88 Q200 105 165 88 Z" fill="#374151"/>
+    <path d="M188 100 L185 150 M212 100 L215 150" stroke="#f9fafb" stroke-width="4" stroke-linecap="round"/>
+    <path d="M150 195 H250 L260 240 H140 Z" fill="#4b5563" stroke="#1f2937" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M122 246 H278" stroke="#4b5563" stroke-width="8"/>
 </svg>

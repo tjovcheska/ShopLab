@@ -1,6 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Chef&apos;s Knife">
-  <rect width="400" height="300" fill="#16a34a" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#16a34a"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">CK</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Chef&apos;s Knife</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0fdf4"/><stop offset="1" stop-color="#dcfce7"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="150" ry="12" fill="#0f172a" opacity="0.10"/>
+    <g transform="rotate(-14 200 160)">
+      <path d="M50 168 L250 138 L250 184 Q150 202 50 168 Z" fill="#e5e7eb" stroke="#1f2937" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M75 168 L245 148" stroke="#ffffff" stroke-width="5" opacity="0.8"/>
+      <rect x="248" y="134" width="14" height="54" rx="3" fill="#9ca3af" stroke="#1f2937" stroke-width="3"/>
+      <rect x="262" y="142" width="96" height="38" rx="12" fill="#1f2937" stroke="#1f2937" stroke-width="3"/>
+      <circle cx="285" cy="161" r="5" fill="#d1d5db"/><circle cx="310" cy="161" r="5" fill="#d1d5db"/><circle cx="335" cy="161" r="5" fill="#d1d5db"/>
+    </g>
 </svg>

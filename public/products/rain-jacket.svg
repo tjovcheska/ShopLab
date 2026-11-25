@@ -1,6 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-label="Rain Jacket">
-  <rect width="400" height="300" fill="#db2777" opacity="0.15"/>
-  <circle cx="200" cy="125" r="62" fill="#db2777"/>
-  <text x="200" y="146" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">RJ</text>
-  <text x="200" y="245" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1f2937" text-anchor="middle">Rain Jacket</text>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdf2f8"/><stop offset="1" stop-color="#fce7f3"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <ellipse cx="200" cy="262" rx="120" ry="12" fill="#0f172a" opacity="0.10"/>
+    <path d="M155 75 Q160 30 200 30 Q240 30 245 75 L300 95 L330 210 L298 220 L280 140 L280 250 L120 250 L120 140 L102 220 L70 210 L100 95 Z"
+      fill="#facc15" stroke="#1f2937" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M168 78 Q172 48 200 48 Q228 48 232 78 Q200 90 168 78 Z" fill="#a16207" opacity="0.5"/>
+    <path d="M200 90 V250" stroke="#1f2937" stroke-width="4"/>
+    <path d="M196 100 h8 M196 125 h8 M196 150 h8 M196 175 h8 M196 200 h8 M196 225 h8" stroke="#6b7280" stroke-width="3"/>
+    <path d="M140 170 h40 M220 170 h40" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+    <path d="M185 78 L180 110 M215 78 L220 110" stroke="#1f2937" stroke-width="2.5"/>
 </svg>
